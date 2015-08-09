@@ -72,6 +72,10 @@ public class TokensUtils {
         token.setX(x);
         token.setY(y);
         token.setSize(size);
+        if (tokenDetails.length > 4) {
+            token.setCategoryName(tokenDetails[4]);
+            token.setCategoryId(tokenDetails[5]);
+        }
         return token;
     }
 

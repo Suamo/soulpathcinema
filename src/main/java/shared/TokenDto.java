@@ -12,6 +12,8 @@ public class TokenDto implements Serializable {
     private String y;
     private Movie movie;
     private String size;
+    private String categoryName;
+    private String categoryId;
 
     public String getDomId() {
         return domId;
@@ -59,5 +61,21 @@ public class TokenDto implements Serializable {
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
     }
 }

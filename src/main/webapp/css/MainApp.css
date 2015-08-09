@@ -15,6 +15,9 @@ svg {
     display: none;
 }
 
+.token {
+    background-size: 25px !important;
+}
 .mandala div {
     position: absolute;
     top: 62px;

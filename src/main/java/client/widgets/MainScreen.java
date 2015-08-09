@@ -1,13 +1,11 @@
 package client.widgets;
 
-import client.SpConstants;
 import client.SpUtils;
 import client.rpc.MainAppService;
 import client.widgets.detailsscreen.MovieDetailsScreen;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -33,6 +31,10 @@ import static com.google.gwt.dom.client.Style.Unit.PX;
 public class MainScreen extends Composite {
 
     public static final String DEFAULT_TOKEN_IMG = "/img/unknown_token.svg";
+    public static final double SPRITE_SIZE1_MULT = 25.25;
+    public static final double SPRITE_SIZE2_MULT = 31;
+    public static final double SPRITE_SIZE3_MULT = 35;
+    public static final double SPRITE_SIZE4_MULT = 57;
 
     @UiField
     DivElement loadingScreen;
@@ -93,6 +95,9 @@ public class MainScreen extends Composite {
                 Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
                     public void execute() {
                         for (TokenDto token : knownMovies.values()) {
+                            if (token.getCategoryId() == null) {
+                                continue;
+                            }
                             imagesLayer.appendChild(newTokenElement(token));
                         }
                         Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
@@ -141,8 +146,28 @@ public class MainScreen extends Composite {
         token.addClassName("img-circle circle-size" + tokenDto.getSize());
         token.getStyle().setLeft(offsetLeft, PX);
         token.getStyle().setTop(offsetTop, PX);
-        updatePoster(token, tokenDto.getMovie());
+        token.getStyle().setProperty("background", getTokenBackground(tokenDto));
+//        updatePoster(token, tokenDto.getMovie());
         return token;
+    }
+
+    private String getTokenBackground(TokenDto tokenDto) {
+        return "url('/img/movies/" + tokenDto.getCategoryName() + ".png') 0 -" + getTokenImagePosition(tokenDto) + "px";
+    }
+
+    private double getTokenImagePosition(TokenDto tokenDto) {
+        switch (Integer.valueOf(tokenDto.getSize())) {
+            case 1:
+                return Integer.valueOf(tokenDto.getCategoryId()) * SPRITE_SIZE1_MULT;
+            case 2:
+                return Integer.valueOf(tokenDto.getCategoryId()) * SPRITE_SIZE2_MULT;
+            case 3:
+                return Integer.valueOf(tokenDto.getCategoryId()) * SPRITE_SIZE3_MULT;
+            case 4:
+                return Integer.valueOf(tokenDto.getCategoryId()) * SPRITE_SIZE4_MULT;
+            default:
+                return 0;
+        }
     }
 
     private void showTokenDetails(String elementId) {
