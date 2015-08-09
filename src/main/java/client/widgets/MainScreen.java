@@ -137,6 +137,7 @@ public class MainScreen extends Composite {
         Element token = DOM.createDiv();
         token.setId(tokenDto.getDomId());
         token.addClassName("token");
+        token.addClassName(tokenDto.getDomId());
         token.addClassName("img-circle circle-size" + tokenDto.getSize());
         token.getStyle().setLeft(offsetLeft, PX);
         token.getStyle().setTop(offsetTop, PX);

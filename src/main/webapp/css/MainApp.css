@@ -107,6 +107,7 @@ ul.movieDetails div {
     font-weight: normal;
     margin-left: 30px;
     font-size: 20px;
+    width: 26%;
 }
 
 ul.movieDetails .movieTitle {
