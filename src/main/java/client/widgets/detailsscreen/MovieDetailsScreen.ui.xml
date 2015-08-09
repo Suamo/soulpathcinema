@@ -1,0 +1,31 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    <g:HTMLPanel styleName="displayNone" ui:field="detailsScreen">
+        <div class="glassLayer fullScreen" ui:field="glassLayer"/>
+        <ul class="movieDetails fullScreen">
+            <li style="height:60px">
+                <span class="movieTitle" ui:field="titleField"/>
+            </li>
+            <li>
+                director:
+                <div class="movieDirector" ui:field="directorField"/>
+            </li>
+            <li>
+                writer:
+                <div class="movieWriter" ui:field="writerField"/>
+            </li>
+            <li>
+                actors:
+                <div class="movieActors" ui:field="actorsField"/>
+            </li>
+            <li>
+                awards:
+                <div class="movieAwards" ui:field="awardsField"/>
+            </li>
+            <li>
+                imdb:
+                <div class="movieImdbRating" ui:field="imdbRatingField"/>
+            </li>
+        </ul>
+    </g:HTMLPanel>
+</ui:UiBinder>

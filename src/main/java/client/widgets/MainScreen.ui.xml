@@ -1,0 +1,17 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:details='urn:import:client.widgets.detailsscreen'>
+    <g:HTMLPanel>
+        <div ui:field="loadingScreen" class="fullScreen loadingScreen">
+            <span class="fullScreen">Soul path: cinema</span>
+        </div>
+
+        <div ui:field="svgLayer" class="fullScreen"/>
+        <div ui:field="imagesLayer" class="fullScreen imagesLayer"/>
+        <div ui:field="mandala" class="mandala">
+            <div class="circle-main img-circle detailsSphere"/>
+            <div ui:field="popupContent" class="circle-main img-circle"/>
+        </div>
+        <details:MovieDetailsScreen ui:field="movieDetails"/>
+    </g:HTMLPanel>
+</ui:UiBinder>
