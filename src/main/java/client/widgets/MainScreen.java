@@ -173,7 +173,7 @@ public class MainScreen extends Composite {
             if (isMainPoster) {
                 content.getStyle().setBackgroundImage("url('" + requestFullTokenImage(tokenDto.getCategoryName(), tokenDto.getCategoryId()) + "')");
             } else {
-                content.getStyle().setProperty("background", "url('/img/movies/" + tokenDto.getCategoryName() + ".png') 0 -" + getTokenImagePosition(tokenDto) + "px");
+                content.getStyle().setBackgroundImage("url('/img/movies/" + tokenDto.getCategoryName() + "_" + tokenDto.getCategoryId() + ".jpg')");
             }
         }
     }
