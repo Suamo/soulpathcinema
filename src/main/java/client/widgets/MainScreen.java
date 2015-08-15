@@ -29,6 +29,7 @@ import static com.google.gwt.dom.client.Style.Unit.PX;
  */
 public class MainScreen extends Composite {
 
+    public static final String DEFAULT_MAIN_TOKEN_IMG = "/img/author.jpg";
     public static final String DEFAULT_TOKEN_IMG = "/img/unknown_token.svg";
     public static final double SPRITE_SIZE1_MULT = 25.25;
     public static final double SPRITE_SIZE2_MULT = 31;
@@ -53,7 +54,7 @@ public class MainScreen extends Composite {
     public MainScreen() {
         initWidget(ourUiBinder.createAndBindUi(this));
 
-        popupContent.getStyle().setProperty("background", "url(/MainApp/ImageServlet?category=1usa1&id=1)");
+        updatePoster(true, popupContent, null);
 
         MainAppService.App.getInstance().getMap(new AsyncCallback<MapDto>() {
             public void onSuccess(final MapDto mapDto) {
@@ -70,7 +71,7 @@ public class MainScreen extends Composite {
                             }
                             String id = element.getId();
                             if (id != null) {
-                                updatePoster(popupContent, knownMovies.get(id));
+                                updatePoster(true, popupContent, knownMovies.get(id));
                             }
                         } else if (Event.ONCLICK == event.getTypeInt()) {
                             Element element = getEventTarget(event);
@@ -122,6 +123,10 @@ public class MainScreen extends Composite {
         });
     }
 
+    private String requestFullTokenImage(String category, int id) {
+        return "url(/MainApp/ImageServlet?category=" + category + "&id=" + id + ")";
+    }
+
     private Element getEventTarget(Event event) {
         EventTarget target = event.getEventTarget();
         Element element = Element.as(target);
@@ -144,7 +149,7 @@ public class MainScreen extends Composite {
         token.getStyle().setLeft(offsetLeft, PX);
         token.getStyle().setTop(offsetTop, PX);
 
-        updatePoster(token, tokenDto);
+        updatePoster(false, token, tokenDto);
         return token;
     }
 
@@ -164,10 +169,10 @@ public class MainScreen extends Composite {
         }
     }
 
-    private void updatePoster(Element content, TokenDto tokenDto) {
+    private void updatePoster(boolean isMainPoster, Element content, TokenDto tokenDto) {
         if (tokenDto == null || tokenDto.getCategoryName() == null || tokenDto.getCategoryId() == null) {
             content.getStyle().setProperty("background", "");
-            content.getStyle().setBackgroundImage("url('" + DEFAULT_TOKEN_IMG + "')");
+            content.getStyle().setBackgroundImage("url('" + (isMainPoster ? DEFAULT_MAIN_TOKEN_IMG : DEFAULT_TOKEN_IMG) + "')");
         } else {
             content.getStyle().setProperty("background", "url('/img/movies/" + tokenDto.getCategoryName() + ".png') 0 -" + getTokenImagePosition(tokenDto) + "px");
         }
