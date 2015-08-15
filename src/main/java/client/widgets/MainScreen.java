@@ -17,7 +17,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import shared.MapDto;
-import shared.Movie;
 import shared.TokenDto;
 
 import java.util.HashMap;
@@ -54,7 +53,8 @@ public class MainScreen extends Composite {
     public MainScreen() {
         initWidget(ourUiBinder.createAndBindUi(this));
 
-        updatePoster(popupContent, null);
+        popupContent.getStyle().setProperty("background", "url(/MainApp/ImageServlet?category=1usa1&id=1)");
+
         MainAppService.App.getInstance().getMap(new AsyncCallback<MapDto>() {
             public void onSuccess(final MapDto mapDto) {
                 knownMovies = mapDto.getKnownMovies();
@@ -70,7 +70,7 @@ public class MainScreen extends Composite {
                             }
                             String id = element.getId();
                             if (id != null) {
-                                showTokenDetails(id);
+                                updatePoster(popupContent, knownMovies.get(id));
                             }
                         } else if (Event.ONCLICK == event.getTypeInt()) {
                             Element element = getEventTarget(event);
@@ -95,9 +95,6 @@ public class MainScreen extends Composite {
                 Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
                     public void execute() {
                         for (TokenDto token : knownMovies.values()) {
-                            if (token.getCategoryId() == null) {
-                                continue;
-                            }
                             imagesLayer.appendChild(newTokenElement(token));
                         }
                         Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
@@ -146,14 +143,11 @@ public class MainScreen extends Composite {
         token.addClassName("img-circle circle-size" + tokenDto.getSize());
         token.getStyle().setLeft(offsetLeft, PX);
         token.getStyle().setTop(offsetTop, PX);
-        token.getStyle().setProperty("background", getTokenBackground(tokenDto));
-//        updatePoster(token, tokenDto.getMovie());
+
+        updatePoster(token, tokenDto);
         return token;
     }
 
-    private String getTokenBackground(TokenDto tokenDto) {
-        return "url('/img/movies/" + tokenDto.getCategoryName() + ".png') 0 -" + getTokenImagePosition(tokenDto) + "px";
-    }
 
     private double getTokenImagePosition(TokenDto tokenDto) {
         switch (Integer.valueOf(tokenDto.getSize())) {
@@ -170,16 +164,12 @@ public class MainScreen extends Composite {
         }
     }
 
-    private void showTokenDetails(String elementId) {
-        updatePoster(popupContent, knownMovies.get(elementId).getMovie());
-    }
-
-    private void updatePoster(Element content, Movie movie) {
-        if (movie == null || movie.getPoster() == null) {
+    private void updatePoster(Element content, TokenDto tokenDto) {
+        if (tokenDto == null || tokenDto.getCategoryName() == null || tokenDto.getCategoryId() == null) {
+            content.getStyle().setProperty("background", "");
             content.getStyle().setBackgroundImage("url('" + DEFAULT_TOKEN_IMG + "')");
         } else {
-            String poster = movie.getPoster();
-            content.getStyle().setBackgroundImage("url('" + poster + "')");
+            content.getStyle().setProperty("background", "url('/img/movies/" + tokenDto.getCategoryName() + ".png') 0 -" + getTokenImagePosition(tokenDto) + "px");
         }
     }
 

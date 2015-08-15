@@ -6,9 +6,10 @@
 
     <entry-point class='client.MainApp'/>
     <servlet path="/MainAppService" class="server.MainAppServiceImpl"/>
+    <servlet path="/ImageServlet" class="server.ImageServlet"/>
 
     <source path="client"/>
-    <source path='shared'/>
+    <source path="shared"/>
 
     <extend-configuration-property name="document.compatMode" value="BackCompat"/>
 </module>

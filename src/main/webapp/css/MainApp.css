@@ -15,9 +15,6 @@ svg {
     display: none;
 }
 
-.token {
-    background-size: 25px !important;
-}
 .mandala div {
     position: absolute;
     top: 62px;
@@ -50,35 +47,35 @@ svg {
 .circle-size4 {
     width: 57px;
     height: 57px;
-    background-size: 57px 57px;
+    background-size: 57px !important;
 }
 
 /*18.34*/
 .circle-size3 {
     width: 35px;
     height: 35px;
-    background-size: 35px 35px;
+    background-size: 35px !important;
 }
 
 /*15.814*/
 .circle-size2 {
     width: 31px;
     height: 31px;
-    background-size: 31px 31px;
+    background-size: 31px !important;
 }
 
 /*12.957*/
 .circle-size1 {
     width: 25px;
     height: 25px;
-    background-size: 25px 25px;
+    background-size: 25px !important;
 }
 
 /*main*/
-.circle-main {
+.circle-main, .circle-size0 {
     width: 900px;
     height: 900px;
-    background-size: 100% 100%;
+    background-size: 100% !important;
     background-position: center center;
     z-index: 5;
 }

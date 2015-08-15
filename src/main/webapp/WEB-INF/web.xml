@@ -4,12 +4,24 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
     <servlet>
-        <servlet-name>MainApp MainAppService</servlet-name>
+        <servlet-name>MainAppService</servlet-name>
         <servlet-class>server.MainAppServiceImpl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ImageServlet</servlet-name>
+        <servlet-class>server.ImageServlet</servlet-class>
+    </servlet>
+
+
     <servlet-mapping>
-        <servlet-name>MainApp MainAppService</servlet-name>
+        <servlet-name>MainAppService</servlet-name>
         <url-pattern>/MainApp/MainAppService</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImageServlet</servlet-name>
+        <url-pattern>/MainApp/ImageServlet</url-pattern>
+    </servlet-mapping>
+
 </web-app>
