@@ -26,6 +26,9 @@ import static com.google.gwt.dom.client.Style.Unit.PX;
 
 /**
  * Created by John Silver on 05.14.2015 14:33
+ * dimentions:
+ * big images: 791*791
+ * small images: 57*57
  */
 public class MainScreen extends Composite {
 
