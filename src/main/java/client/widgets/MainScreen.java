@@ -35,6 +35,7 @@ public class MainScreen extends Composite {
     public static final double SPRITE_SIZE2_MULT = 31;
     public static final double SPRITE_SIZE3_MULT = 35;
     public static final double SPRITE_SIZE4_MULT = 57;
+    public static final String SOUL_PATH_CINEMA_LINK = "https://soulpathcinema.wordpress.com/";
 
     @UiField
     DivElement loadingScreen;

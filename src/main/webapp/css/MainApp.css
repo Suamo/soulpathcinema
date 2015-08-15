@@ -87,8 +87,8 @@ svg {
 }
 
 .detailsSphere {
-    background: radial-gradient(circle at 50% 50%, transparent, black);
-    /*background: radial-gradient(circle at 50% 50%, transparent 60%, black 104%);*/
+    /*background: radial-gradient(circle at 50% 50%, transparent, black);*/
+    background: radial-gradient(circle at 50% 50%, transparent 60%, black 104%);
     z-index: 6;
 }
 
