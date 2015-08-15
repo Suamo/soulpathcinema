@@ -21,7 +21,7 @@ public class ImageServlet extends HttpServlet {
         String category = request.getParameter("category");
         String id = request.getParameter("id");
         response.setContentType("image/jpeg");
-        BufferedImage bi = ImageIO.read(this.getClass().getResource("/tokens/" + category + id + ".jpg"));
+        BufferedImage bi = ImageIO.read(this.getClass().getResource("/tokens/" + category + "_" + id + ".jpg"));
         OutputStream out = response.getOutputStream();
         ImageIO.write(bi, "jpg", out);
         out.close();

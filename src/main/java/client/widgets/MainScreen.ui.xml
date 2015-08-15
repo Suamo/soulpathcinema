@@ -10,7 +10,7 @@
         <div ui:field="imagesLayer" class="fullScreen imagesLayer"/>
         <div ui:field="mandala" class="mandala">
             <div class="circle-main img-circle detailsSphere"/>
-            <div ui:field="popupContent" class="circle-main img-circle"/>
+            <div ui:field="mainPoster" class="circle-main img-circle"/>
         </div>
         <details:MovieDetailsScreen ui:field="movieDetails"/>
     </g:HTMLPanel>

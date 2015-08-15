@@ -47,14 +47,14 @@ public class MainScreen extends Composite {
     @UiField
     MovieDetailsScreen movieDetails;
     @UiField
-    DivElement popupContent;
+    DivElement mainPoster;
 
     private HashMap<String, TokenDto> knownMovies;
 
     public MainScreen() {
         initWidget(ourUiBinder.createAndBindUi(this));
 
-        updatePoster(true, popupContent, null);
+        updatePoster(true, mainPoster, null);
 
         MainAppService.App.getInstance().getMap(new AsyncCallback<MapDto>() {
             public void onSuccess(final MapDto mapDto) {
@@ -71,7 +71,7 @@ public class MainScreen extends Composite {
                             }
                             String id = element.getId();
                             if (id != null) {
-                                updatePoster(true, popupContent, knownMovies.get(id));
+                                updatePoster(true, mainPoster, knownMovies.get(id));
                             }
                         } else if (Event.ONCLICK == event.getTypeInt()) {
                             Element element = getEventTarget(event);
@@ -123,10 +123,6 @@ public class MainScreen extends Composite {
         });
     }
 
-    private String requestFullTokenImage(String category, int id) {
-        return "url(/MainApp/ImageServlet?category=" + category + "&id=" + id + ")";
-    }
-
     private Element getEventTarget(Event event) {
         EventTarget target = event.getEventTarget();
         Element element = Element.as(target);
@@ -170,12 +166,20 @@ public class MainScreen extends Composite {
     }
 
     private void updatePoster(boolean isMainPoster, Element content, TokenDto tokenDto) {
+        content.getStyle().setProperty("background", "");
         if (tokenDto == null || tokenDto.getCategoryName() == null || tokenDto.getCategoryId() == null) {
-            content.getStyle().setProperty("background", "");
             content.getStyle().setBackgroundImage("url('" + (isMainPoster ? DEFAULT_MAIN_TOKEN_IMG : DEFAULT_TOKEN_IMG) + "')");
         } else {
-            content.getStyle().setProperty("background", "url('/img/movies/" + tokenDto.getCategoryName() + ".png') 0 -" + getTokenImagePosition(tokenDto) + "px");
+            if (isMainPoster) {
+                content.getStyle().setBackgroundImage("url('" + requestFullTokenImage(tokenDto.getCategoryName(), tokenDto.getCategoryId()) + "')");
+            } else {
+                content.getStyle().setProperty("background", "url('/img/movies/" + tokenDto.getCategoryName() + ".png') 0 -" + getTokenImagePosition(tokenDto) + "px");
+            }
         }
+    }
+
+    private String requestFullTokenImage(String category, String id) {
+        return "/MainApp/ImageServlet?category=" + category + "&id=" + id;
     }
 
 
