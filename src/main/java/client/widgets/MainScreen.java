@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -54,6 +55,7 @@ public class MainScreen extends Composite {
     DivElement mainPoster;
 
     private HashMap<String, TokenDto> knownMovies;
+    private boolean initPosterDisplayed = true;
 
     public MainScreen() {
         initWidget(ourUiBinder.createAndBindUi(this));
@@ -75,6 +77,7 @@ public class MainScreen extends Composite {
                             }
                             String id = element.getId();
                             if (id != null) {
+                                initPosterDisplayed = false;
                                 updatePoster(true, mainPoster, knownMovies.get(id));
                             }
                         } else if (Event.ONCLICK == event.getTypeInt()) {
@@ -93,6 +96,10 @@ public class MainScreen extends Composite {
                 DOM.sinkEvents(mandala, Event.ONCLICK);
                 Event.setEventListener(mandala, new EventListener() {
                     public void onBrowserEvent(Event event) {
+                        if (initPosterDisplayed) {
+                            Window.open(SOUL_PATH_CINEMA_LINK, "_blank", "");
+                            return;
+                        }
                         movieDetails.hide();
                     }
                 });
