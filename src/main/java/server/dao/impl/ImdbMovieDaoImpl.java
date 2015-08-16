@@ -21,8 +21,8 @@ import java.net.URL;
  * See: http://www.omdbapi.com/
  */
 public class ImdbMovieDaoImpl implements ImdbMovieDao {
-    private static final Logger logger = Logger.getLogger(ImdbMovieDaoImpl.class);
     public static final String IGNORE_ID_PREFIX = "_xz_";
+    private static final Logger logger = Logger.getLogger(ImdbMovieDaoImpl.class);
     private Movie UNKNOWN_MOVIE = newMovie();
 
     public Movie getMovie(String imdbId) throws IOException {

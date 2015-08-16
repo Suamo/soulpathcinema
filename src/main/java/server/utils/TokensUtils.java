@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 
+import static server.dao.impl.ImdbMovieDaoImpl.IGNORE_ID_PREFIX;
+
 /**
  * Created by John Silver on 20.22.2015 22:52
  * <p/>
@@ -60,21 +62,20 @@ public class TokensUtils {
         }
     }
 
-    private static TokenDto newToken(String imdbId, String[] tokenDetails) {
-        String domId = tokenDetails[0];
-        String x = tokenDetails[1];
-        String y = tokenDetails[2];
-        String size = tokenDetails[3];
+    private static TokenDto newToken(String domId, String[] tokenDetails) {
+        String x = tokenDetails[0];
+        String y = tokenDetails[1];
+        String size = tokenDetails[2];
 
         TokenDto token = new TokenDto();
         token.setDomId(domId);
-        token.setImdbId(imdbId);
+        token.setImdbId(IGNORE_ID_PREFIX); // this will be ignored
         token.setX(x);
         token.setY(y);
         token.setSize(size);
         if (tokenDetails.length > 4) {
-            token.setCategoryName(tokenDetails[4]);
-            token.setCategoryId(tokenDetails[5]);
+            token.setCategoryName(tokenDetails[3]);
+            token.setCategoryId(tokenDetails[4]);
         }
         return token;
     }
