@@ -23,17 +23,16 @@ import java.net.URL;
 public class ImdbMovieDaoImpl implements ImdbMovieDao {
     public static final String IGNORE_ID_PREFIX = "_xz_";
     private static final Logger logger = Logger.getLogger(ImdbMovieDaoImpl.class);
-    private Movie UNKNOWN_MOVIE = newMovie();
 
     public Movie getMovie(String imdbId) throws IOException {
         if (imdbId.startsWith(IGNORE_ID_PREFIX)) {
-            return UNKNOWN_MOVIE;
+            return newUnknownMovie();
         }
         CloseableHttpClient httpClient = HttpClients.custom().build();
         HttpGet httpget = new HttpGet(new ImdbLinkBuilder().setId(imdbId).build());
 
         try {
-            logger.info("Gerring movie by request: " + httpget.getRequestLine());
+            logger.info("Getting movie by request: " + httpget.getRequestLine());
             CloseableHttpResponse responseBody = httpClient.execute(httpget);
 
             ObjectMapper mapper = new ObjectMapper();
@@ -53,7 +52,6 @@ public class ImdbMovieDaoImpl implements ImdbMovieDao {
 
         byte[] b = new byte[2048];
         int length;
-
         while ((length = is.read(b)) != -1) {
             os.write(b, 0, length);
         }
@@ -62,7 +60,7 @@ public class ImdbMovieDaoImpl implements ImdbMovieDao {
         os.close();
     }
 
-    private Movie newMovie() {
+    private Movie newUnknownMovie() {
         Movie movie = new Movie();
         movie.setTitle("Unknown");
         movie.setPoster("/img/unknown_token.svg");
