@@ -1,16 +1,16 @@
 package server;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import client.rpc.MainAppService;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import server.dao.ImdbMovieDao;
 import server.dao.impl.ImdbMovieDaoImpl;
 import server.utils.TokensUtils;
 import shared.MapDto;
 import shared.Movie;
 import shared.TokenDto;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +34,6 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
             InputStream stream = MainAppServiceImpl.class.getResourceAsStream("/map.svg");
             String map = IOUtils.toString(stream, "utf-8");
             mapDto.setMap(map);
-            TokensUtils.generateTokens();
             for (TokenDto dto : TokensUtils.generateTokens()) {
                 Movie movie = imdbMovieDao.getMovie(dto.getImdbId());
                 dto.setMovie(movie);

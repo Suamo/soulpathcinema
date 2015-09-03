@@ -31,10 +31,18 @@ public class TokensUtils {
             inputStream = TokensUtils.class.getClassLoader().getResourceAsStream(tokensFile);
             loadProperties(inputStream, prop, tokensFile);
 
+            int count = 0;
             for (Map.Entry<Object, Object> tokenPropertyEntry : prop.entrySet()) {
-                String[] tokenDetails = ((String) tokenPropertyEntry.getValue()).split(";");
+                String value = (String) tokenPropertyEntry.getValue();
+                if (value.contains("block")) {
+                    count++;
+                }
+                String[] tokenDetails = value.split(";");
                 knownMovies.add(newToken((String) tokenPropertyEntry.getKey(), tokenDetails));
             }
+            System.out.println("===================================");
+            System.out.println("= Tokens filled: " + (count / (prop.entrySet().size()/100)) + "%");
+            System.out.println("===================================");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
