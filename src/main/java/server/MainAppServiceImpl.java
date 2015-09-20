@@ -6,7 +6,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.dao.MainRepo;
@@ -66,7 +66,7 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
     private void initApplication() {
         BasicConfigurator.configure();
         if (context == null) {
-            context = new AnnotationConfigApplicationContext(AppConfig.class);
+            context = new ClassPathXmlApplicationContext("applicationContext.xml");
         }
         if (repository == null) {
             repository = context.getBean(MainRepo.class);
