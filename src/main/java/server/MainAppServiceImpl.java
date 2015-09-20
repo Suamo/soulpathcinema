@@ -31,12 +31,10 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
 
     private MainRepo repository;
 
-    private MapDto mapDto;
-
     public MapDto getMap() {
-        BasicConfigurator.configure();
-        initSpring();
-        mapDto = new MapDto();
+        initApplication();
+
+        MapDto mapDto = new MapDto();
         mapDto.setMap(obtainMap());
         for (TokenDto dto : TokensUtils.generateTokens()) {
             dto.setMovie(convertMovie(dto.getDomId(), repository.findByDomId(dto.getDomId())));
@@ -52,7 +50,8 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
         return new MovieDto(movie.getId(), domId, movie.getName(), movie.getDirector());
     }
 
-    private void initSpring() {
+    private void initApplication() {
+        BasicConfigurator.configure();
         if (context == null) {
             context = new AnnotationConfigApplicationContext(AppConfig.class);
         }
