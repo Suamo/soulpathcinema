@@ -1,9 +1,10 @@
 package client.rpc;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.google.gwt.core.client.GWT;
 import shared.MapDto;
+import shared.MovieDto;
 
 /**
  * Created by John Silver on 05.14.2015 14:33
@@ -11,6 +12,8 @@ import shared.MapDto;
 @RemoteServiceRelativePath("MainAppService")
 public interface MainAppService extends RemoteService {
     MapDto getMap();
+
+    void saveMovie(MovieDto dto);
 
     /**
      * Utility/Convenience class.

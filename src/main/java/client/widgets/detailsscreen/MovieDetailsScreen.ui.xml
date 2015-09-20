@@ -4,11 +4,14 @@
         <div class="glassLayer fullScreen" ui:field="glassLayer"/>
         <ul class="movieDetails fullScreen">
             <li style="height:60px">
-                <span class="movieTitle" ui:field="titleField"/>
+                title:
+                <input type="text" placeholder="Add title here"
+                       class="editableInput movieTitle" ui:field="titleField"/>
             </li>
             <li>
                 director:
-                <div class="movieDirector" ui:field="directorField"/>
+                <input type="text" placeholder="Add director here"
+                       class="editableInput movieDirector" ui:field="directorField"/>
             </li>
             <li>
                 writer:

@@ -43,11 +43,24 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
         return mapDto;
     }
 
+    public void saveMovie(MovieDto dto) {
+        repository.save(convertMovieDto(dto));
+    }
+
     private MovieDto convertMovie(String domId, Movie movie) {
         if (movie == null) {
-            return new MovieDto(null, domId, "Unknown", "Unknown");
+            return new MovieDto(null, domId, "", "");
         }
         return new MovieDto(movie.getId(), domId, movie.getName(), movie.getDirector());
+    }
+
+    private Movie convertMovieDto(MovieDto moviedto) {
+        Movie movie = new Movie();
+        movie.setId(moviedto.getId());
+        movie.setDomId(moviedto.getDomId());
+        movie.setName(moviedto.getName());
+        movie.setDirector(moviedto.getDirector());
+        return movie;
     }
 
     private void initApplication() {

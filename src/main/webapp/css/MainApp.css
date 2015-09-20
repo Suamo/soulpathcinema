@@ -92,6 +92,45 @@ svg {
     z-index: 6;
 }
 
+.editableInput:focus {
+    background-color: white;
+    color: black;
+}
+
+.editableInput {
+    padding: 10px;
+    border: solid 1px gainsboro;
+    transition: box-shadow 0.3s, border 0.3s;
+
+    display: block;
+    margin: 0;
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+    -webkit-appearance: none;
+    box-shadow: none;
+
+    box-sizing: border-box;
+
+    background-color: black;
+    opacity: 0.8;
+    z-index: 2;
+    color: white;
+    -webkit-rtl-ordering: logical;
+    -webkit-user-select: text;
+    cursor: auto;
+
+    font: 13.3333px Arial;
+    text-rendering: auto;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    text-align: start;
+
+    -webkit-writing-mode: horizontal-tb;
+}
+
 ul.movieDetails {
     z-index: 3;
     color: white;

@@ -18,6 +18,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import shared.MapDto;
+import shared.MovieDto;
 import shared.TokenDto;
 
 import java.util.HashMap;
@@ -62,6 +63,19 @@ public class MainScreen extends Composite {
 
         updatePoster(true, mainPoster, null);
 
+        movieDetails.setSaveListener(new SaveMovieListener() {
+            public void save(MovieDto dto) {
+                MainAppService.App.getInstance().saveMovie(dto, new AsyncCallback<Void>() {
+                    public void onFailure(Throwable caught) {
+                        Window.alert("Cannot save movie. Please check logs.");
+                    }
+
+                    public void onSuccess(Void result) {
+
+                    }
+                });
+            }
+        });
         MainAppService.App.getInstance().getMap(new AsyncCallback<MapDto>() {
             public void onSuccess(final MapDto mapDto) {
                 knownMovies = mapDto.getKnownMovies();
@@ -193,6 +207,9 @@ public class MainScreen extends Composite {
         return "/MainApp/ImageServlet?category=" + category + "&id=" + id;
     }
 
+    public static interface SaveMovieListener {
+        void save(MovieDto dto);
+    }
 
     interface MainScreenUiBinder extends UiBinder<HTMLPanel, MainScreen> {
     }
