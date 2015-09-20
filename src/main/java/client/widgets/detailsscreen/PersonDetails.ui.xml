@@ -1,0 +1,15 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+    <g:HTMLPanel addStyleNames="displayNone">
+        <ul class="movieDetails fullScreen">
+            <li style="height:60px">
+                Name:
+                <input type="text" placeholder="Add person name here" class="editableInput personName" ui:field="nameField"/>
+            </li>
+            <!--<li>-->
+                <!--imdb id:-->
+                <!--<div class="imdbId" ui:field="imdbId"/>-->
+            <!--</li>-->
+        </ul>
+    </g:HTMLPanel>
+</ui:UiBinder>

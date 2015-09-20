@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.dao.MainRepo;
 import server.entity.Movie;
+import server.entity.Person;
+import server.entity.Token;
 import server.utils.TokensUtils;
 import shared.MapDto;
 import shared.MovieDto;
@@ -43,8 +45,8 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
         return mapDto;
     }
 
-    public void saveMovie(MovieDto dto) {
-        repository.save(convertMovieDto(dto));
+    public void saveToken(TokenDto dto) {
+//        repository.save(convertMovieDto(dto));
     }
 
     private MovieDto convertMovie(String domId, Movie movie) {
@@ -54,13 +56,26 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
         return new MovieDto(movie.getId(), domId, movie.getName(), movie.getDirector());
     }
 
-    private Movie convertMovieDto(MovieDto moviedto) {
-        Movie movie = new Movie();
-        movie.setId(moviedto.getId());
-        movie.setDomId(moviedto.getDomId());
-        movie.setName(moviedto.getName());
-        movie.setDirector(moviedto.getDirector());
-        return movie;
+    private Token convertTokenDto(TokenDto tokendto) {
+        Token token = new Token();
+        if(tokendto.getPerson() != null) {
+            Person person = new Person();
+            person.setId(tokendto.getPerson().getId());
+            person.setDomId(tokendto.getPerson().getDomId());
+            person.setName(tokendto.getPerson().getName());
+            token.setPerson(person);
+            token.setMovie(null);
+        } else {
+            Movie movie = new Movie();
+            movie.setId(tokendto.getMovie().getId());
+            movie.setDomId(tokendto.getMovie().getDomId());
+            movie.setName(tokendto.getMovie().getName());
+            movie.setDirector(tokendto.getMovie().getDirector());
+            token.setMovie(movie);
+            token.setPerson(null);
+        }
+
+        return token;
     }
 
     private void initApplication() {

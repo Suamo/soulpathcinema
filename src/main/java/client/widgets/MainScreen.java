@@ -2,7 +2,7 @@ package client.widgets;
 
 import client.SpUtils;
 import client.rpc.MainAppService;
-import client.widgets.detailsscreen.MovieDetailsScreen;
+import client.widgets.detailsscreen.TokenDetailsScreen;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
@@ -18,7 +18,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import shared.MapDto;
-import shared.MovieDto;
 import shared.TokenDto;
 
 import java.util.HashMap;
@@ -51,7 +50,7 @@ public class MainScreen extends Composite {
     @UiField
     DivElement mandala;
     @UiField
-    MovieDetailsScreen movieDetails;
+    TokenDetailsScreen movieDetails;
     @UiField
     DivElement mainPoster;
 
@@ -63,9 +62,9 @@ public class MainScreen extends Composite {
 
         updatePoster(true, mainPoster, null);
 
-        movieDetails.setSaveListener(new SaveMovieListener() {
-            public void save(MovieDto dto) {
-                MainAppService.App.getInstance().saveMovie(dto, new AsyncCallback<Void>() {
+        movieDetails.setSaveListener(new SaveTokenListener() {
+            public void save(TokenDto dto) {
+                MainAppService.App.getInstance().saveToken(dto, new AsyncCallback<Void>() {
                     public void onFailure(Throwable caught) {
                         Window.alert("Cannot save movie. Please check logs.");
                     }
@@ -76,6 +75,7 @@ public class MainScreen extends Composite {
                 });
             }
         });
+
         MainAppService.App.getInstance().getMap(new AsyncCallback<MapDto>() {
             public void onSuccess(final MapDto mapDto) {
                 knownMovies = mapDto.getKnownMovies();
@@ -101,7 +101,7 @@ public class MainScreen extends Composite {
                             }
                             String id = element.getId();
                             if (id != null) {
-                                movieDetails.show(knownMovies.get(id).getMovie());
+                                movieDetails.show(knownMovies.get(id));
                             }
                         }
                     }
@@ -207,8 +207,8 @@ public class MainScreen extends Composite {
         return "/MainApp/ImageServlet?category=" + category + "&id=" + id;
     }
 
-    public static interface SaveMovieListener {
-        void save(MovieDto dto);
+    public static interface SaveTokenListener {
+        void save(TokenDto dto);
     }
 
     interface MainScreenUiBinder extends UiBinder<HTMLPanel, MainScreen> {

@@ -149,6 +149,7 @@ ul.movieDetails div {
     width: 26%;
 }
 
+ul.movieDetails .personName,
 ul.movieDetails .movieTitle {
     font-size: 30px;
     font-weight: bold;

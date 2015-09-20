@@ -3,18 +3,19 @@ package server.entity;
 import javax.persistence.*;
 
 /**
- * Created by John Silver on 05.19.2015 19:57
+ * Created by John Silver on 20.22.2015 22:17
  */
 @Entity
-public class Movie {
-    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+public class Person {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer id;
+
     String name;
-    String director;
     @Column(name = "dom_id")
     String domId;
 
-    public Movie() {
+    public Person() {
     }
 
     public Integer getId() {
@@ -31,14 +32,6 @@ public class Movie {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
     }
 
     public String getDomId() {

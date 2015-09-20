@@ -11,6 +11,7 @@ public class TokenDto implements Serializable {
     private String x;
     private String y;
     private MovieDto movie;
+    private PersonDto person;
     private String size;
     private String categoryName;
     private String categoryId;
@@ -53,6 +54,14 @@ public class TokenDto implements Serializable {
 
     public void setMovie(MovieDto movie) {
         this.movie = movie;
+    }
+
+    public PersonDto getPerson() {
+        return person;
+    }
+
+    public void setPerson(PersonDto person) {
+        this.person = person;
     }
 
     public String getSize() {

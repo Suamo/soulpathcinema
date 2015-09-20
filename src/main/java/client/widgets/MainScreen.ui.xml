@@ -12,6 +12,6 @@
             <div class="circle-main img-circle detailsSphere"/>
             <div ui:field="mainPoster" class="circle-main img-circle"/>
         </div>
-        <details:MovieDetailsScreen ui:field="movieDetails"/>
+        <details:TokenDetailsScreen ui:field="movieDetails"/>
     </g:HTMLPanel>
 </ui:UiBinder>

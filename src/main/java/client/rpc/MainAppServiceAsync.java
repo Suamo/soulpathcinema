@@ -2,7 +2,7 @@ package client.rpc;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import shared.MapDto;
-import shared.MovieDto;
+import shared.TokenDto;
 
 /**
  * Created by John Silver on 05.14.2015 14:33
@@ -10,5 +10,5 @@ import shared.MovieDto;
 public interface MainAppServiceAsync {
     void getMap(AsyncCallback<MapDto> async);
 
-    void saveMovie(MovieDto dto, AsyncCallback<Void> async);
+    void saveToken(TokenDto dto, AsyncCallback<Void> async);
 }

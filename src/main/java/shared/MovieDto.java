@@ -5,11 +5,12 @@ import java.io.Serializable;
 /**
  * Created by John Silver on 05.19.2015 19:57
  */
-public class MovieDto implements Serializable{
+public class MovieDto implements Serializable {
     private Integer id;
+    private String domId;
     private String name;
     private String director;
-    private String domId;
+    private String imdbId;
 
     public MovieDto() {
     }
@@ -51,5 +52,13 @@ public class MovieDto implements Serializable{
 
     public void setDomId(String domId) {
         this.domId = domId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public String getImdbId() {
+        return imdbId;
     }
 }

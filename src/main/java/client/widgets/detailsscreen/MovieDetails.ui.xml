@@ -1,17 +1,18 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-    <g:HTMLPanel styleName="displayNone" ui:field="detailsScreen">
-        <div class="glassLayer fullScreen" ui:field="glassLayer"/>
+    <g:HTMLPanel addStyleNames="displayNone">
         <ul class="movieDetails fullScreen">
             <li style="height:60px">
                 title:
-                <input type="text" placeholder="Add title here"
-                       class="editableInput movieTitle" ui:field="titleField"/>
+                <input type="text" placeholder="Add title here" class="editableInput movieTitle" ui:field="titleField"/>
+            </li>
+            <li>
+                imdb id:
+                <input type="text" placeholder="Add IMDB id here" class="editableInput imdbId" ui:field="imdbId"/>
             </li>
             <li>
                 director:
-                <input type="text" placeholder="Add director here"
-                       class="editableInput movieDirector" ui:field="directorField"/>
+                <input type="text" placeholder="Add director here" class="editableInput movieDirector" ui:field="directorField"/>
             </li>
             <li>
                 writer:
