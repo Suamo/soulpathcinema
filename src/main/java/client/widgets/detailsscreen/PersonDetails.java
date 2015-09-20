@@ -47,7 +47,6 @@ public class PersonDetails extends Composite {
             token.setPerson(new PersonDto());
         }
         nameField.setValue(token.getPerson().getName());
-        save();
     }
 
     private void save() {

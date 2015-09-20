@@ -4,7 +4,6 @@ import client.widgets.MainScreen.SaveTokenListener;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.InputElement;
-import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
@@ -36,29 +35,19 @@ public class MovieDetails extends Composite {
     @UiField
     DivElement imdbRatingField;
 
+    @UiField
+    DivElement refreshButton;
+
     private TokenDto token;
     private SaveTokenListener saveListener;
 
     public MovieDetails() {
         initWidget(ourUiBinder.createAndBindUi(this));
 
-        DOM.sinkEvents(titleField, Event.ONKEYPRESS);
-        Event.setEventListener(titleField, new EventListener() {
+        DOM.sinkEvents(writerField, Event.ONCLICK);
+        Event.setEventListener(writerField, new EventListener() {
             public void onBrowserEvent(Event event) {
-                if (event.getKeyCode() == KeyCodes.KEY_ENTER) {
-                    save();
-                    directorField.focus();
-                }
-            }
-        });
-
-        DOM.sinkEvents(imdbId, Event.ONKEYPRESS);
-        Event.setEventListener(imdbId, new EventListener() {
-            public void onBrowserEvent(Event event) {
-                if (event.getKeyCode() == KeyCodes.KEY_ENTER) {
-                    save();
-                    titleField.focus();
-                }
+                save();
             }
         });
     }
@@ -72,7 +61,6 @@ public class MovieDetails extends Composite {
         }
         titleField.setValue(token.getMovie().getName());
         directorField.setValue(token.getMovie().getDirector());
-        save();
     }
 
     private void save() {

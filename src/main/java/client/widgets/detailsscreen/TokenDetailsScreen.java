@@ -33,30 +33,33 @@ public class TokenDetailsScreen extends Composite {
     PersonDetails personDetails;
 
     @UiField
-    SpanElement movieLink;
+    SpanElement movieButton;
     @UiField
-    SpanElement personLink;
+    SpanElement personButton;
+
     private TokenDto token;
 
     public TokenDetailsScreen() {
         initWidget(ourUiBinder.createAndBindUi(this));
 
-        DOM.sinkEvents(movieLink, Event.ONCLICK);
-        Event.setEventListener(movieLink, new EventListener() {
+        DOM.sinkEvents(movieButton, Event.ONCLICK);
+        Event.setEventListener(movieButton, new EventListener() {
             public void onBrowserEvent(Event event) {
-                if(!movieLink.getClassName().contains(BLUE_BUTTON)) {
-                    personLink.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
+                if(!movieButton.getClassName().contains(BLUE_BUTTON)) {
+                    personButton.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
+                    movieButton.replaceClassName(GRAY_BUTTON, BLUE_BUTTON);
                     movieDetails.show(token);
                     personDetails.hide();
                 }
             }
         });
 
-        DOM.sinkEvents(personLink, Event.ONCLICK);
-        Event.setEventListener(personLink, new EventListener() {
+        DOM.sinkEvents(personButton, Event.ONCLICK);
+        Event.setEventListener(personButton, new EventListener() {
             public void onBrowserEvent(Event event) {
-                if(!personLink.getClassName().contains(BLUE_BUTTON)) {
-                    movieLink.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
+                if(!personButton.getClassName().contains(BLUE_BUTTON)) {
+                    movieButton.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
+                    personButton.replaceClassName(GRAY_BUTTON, BLUE_BUTTON);
                     personDetails.show(token);
                     movieDetails.hide();
                 }
