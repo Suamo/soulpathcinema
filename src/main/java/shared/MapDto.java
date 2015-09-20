@@ -1,7 +1,6 @@
 package shared;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -9,7 +8,7 @@ import java.util.HashMap;
  */
 public class MapDto implements Serializable {
     private String map;
-    private HashMap<String, TokenDto> knownMovies = new HashMap<String, TokenDto>();
+    private HashMap<String, TokenDto> tokens = new HashMap<String, TokenDto>();
 
     public String getMap() {
         return map;
@@ -19,11 +18,11 @@ public class MapDto implements Serializable {
         this.map = map;
     }
 
-    public void addMovieToken(String id, TokenDto token) {
-        this.knownMovies.put(id, token);
+    public void addToken(String id, TokenDto token) {
+        this.tokens.put(id, token);
     }
 
-    public HashMap<String, TokenDto> getKnownMovies() {
-        return knownMovies;
+    public HashMap<String, TokenDto> getTokens() {
+        return tokens;
     }
 }

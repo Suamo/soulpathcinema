@@ -6,13 +6,12 @@ import javax.persistence.*;
  * Created by John Silver on 05.19.2015 19:57
  */
 @Entity
+@Table(name = "movie")
 public class Movie {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     Integer id;
     String name;
     String director;
-    @Column(name = "dom_id")
-    String domId;
 
     public Movie() {
     }
@@ -39,13 +38,5 @@ public class Movie {
 
     public void setDirector(String director) {
         this.director = director;
-    }
-
-    public String getDomId() {
-        return domId;
-    }
-
-    public void setDomId(String domId) {
-        this.domId = domId;
     }
 }

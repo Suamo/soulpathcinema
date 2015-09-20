@@ -1,20 +1,22 @@
 package server.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by John Silver on 20.22.2015 22:17
  */
 @Entity
+@Table(name = "token")
 public class Token {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer id;
+    @Column(name = "dom_id")
+    String domId;
 
+    @OneToOne
     Movie movie;
+    @OneToOne
     Person person;
 
     public Token() {
@@ -26,6 +28,14 @@ public class Token {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getDomId() {
+        return domId;
+    }
+
+    public void setDomId(String domId) {
+        this.domId = domId;
     }
 
     public Movie getMovie() {

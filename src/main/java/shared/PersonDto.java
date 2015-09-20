@@ -7,10 +7,14 @@ import java.io.Serializable;
  */
 public class PersonDto implements Serializable {
     private Integer id;
-    private String domId;
     private String name;
 
     public PersonDto() {
+    }
+
+    public PersonDto(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -19,14 +23,6 @@ public class PersonDto implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getDomId() {
-        return domId;
-    }
-
-    public void setDomId(String domId) {
-        this.domId = domId;
     }
 
     public String getName() {

@@ -9,13 +9,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import server.dao.MainRepo;
+import server.dao.TokenRepo;
 import server.entity.Movie;
 import server.entity.Person;
 import server.entity.Token;
 import server.utils.TokensUtils;
 import shared.MapDto;
 import shared.MovieDto;
+import shared.PersonDto;
 import shared.TokenDto;
 
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
 
     private ApplicationContext context;
 
-    private MainRepo repository;
+    private TokenRepo repository;
 
     public MapDto getMap() {
         initApplication();
@@ -39,36 +40,46 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
         MapDto mapDto = new MapDto();
         mapDto.setMap(obtainMap());
         for (TokenDto dto : TokensUtils.generateTokens()) {
-            dto.setMovie(convertMovie(dto.getDomId(), repository.findByDomId(dto.getDomId())));
-            mapDto.addMovieToken(dto.getDomId(), dto);
+            Token token = repository.findByDomId(dto.getDomId());
+            if (token != null) {
+                dto.setMovie(convertMovie(token.getMovie()));
+                dto.setPerson(convertPerson(token.getPerson()));
+            }
+            mapDto.addToken(dto.getDomId(), dto);
         }
         return mapDto;
     }
 
-    public void saveToken(TokenDto dto) {
-//        repository.save(convertMovieDto(dto));
+    private PersonDto convertPerson(Person person) {
+        if (person == null) {
+            return null;
+        }
+        return new PersonDto(person.getId(), person.getName());
     }
 
-    private MovieDto convertMovie(String domId, Movie movie) {
+    public void saveToken(TokenDto dto) {
+        repository.save(convertTokenDto(dto));
+    }
+
+    private MovieDto convertMovie(Movie movie) {
         if (movie == null) {
-            return new MovieDto(null, domId, "", "");
+            return null;
         }
-        return new MovieDto(movie.getId(), domId, movie.getName(), movie.getDirector());
+        return new MovieDto(movie.getId(), movie.getName(), movie.getDirector());
     }
 
     private Token convertTokenDto(TokenDto tokendto) {
         Token token = new Token();
+        token.setDomId(tokendto.getDomId());
         if(tokendto.getPerson() != null) {
             Person person = new Person();
             person.setId(tokendto.getPerson().getId());
-            person.setDomId(tokendto.getPerson().getDomId());
             person.setName(tokendto.getPerson().getName());
             token.setPerson(person);
             token.setMovie(null);
         } else {
             Movie movie = new Movie();
             movie.setId(tokendto.getMovie().getId());
-            movie.setDomId(tokendto.getMovie().getDomId());
             movie.setName(tokendto.getMovie().getName());
             movie.setDirector(tokendto.getMovie().getDirector());
             token.setMovie(movie);
@@ -84,7 +95,7 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
             context = new ClassPathXmlApplicationContext("applicationContext.xml");
         }
         if (repository == null) {
-            repository = context.getBean(MainRepo.class);
+            repository = context.getBean(TokenRepo.class);
         }
     }
 

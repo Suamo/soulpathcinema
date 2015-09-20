@@ -7,7 +7,6 @@ import java.io.Serializable;
  */
 public class MovieDto implements Serializable {
     private Integer id;
-    private String domId;
     private String name;
     private String director;
     private String imdbId;
@@ -15,9 +14,8 @@ public class MovieDto implements Serializable {
     public MovieDto() {
     }
 
-    public MovieDto(Integer id, String domId, String name, String director) {
+    public MovieDto(Integer id, String name, String director) {
         this.id = id;
-        this.domId = domId;
         this.name = name;
         this.director = director;
     }
@@ -44,14 +42,6 @@ public class MovieDto implements Serializable {
 
     public void setDirector(String director) {
         this.director = director;
-    }
-
-    public String getDomId() {
-        return domId;
-    }
-
-    public void setDomId(String domId) {
-        this.domId = domId;
     }
 
     public void setImdbId(String imdbId) {

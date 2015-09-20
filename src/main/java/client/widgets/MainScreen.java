@@ -78,7 +78,7 @@ public class MainScreen extends Composite {
 
         MainAppService.App.getInstance().getMap(new AsyncCallback<MapDto>() {
             public void onSuccess(final MapDto mapDto) {
-                knownMovies = mapDto.getKnownMovies();
+                knownMovies = mapDto.getTokens();
                 svgLayer.setInnerHTML(mapDto.getMap());
 
                 DOM.sinkEvents(imagesLayer, Event.ONMOUSEOVER | Event.ONCLICK);
