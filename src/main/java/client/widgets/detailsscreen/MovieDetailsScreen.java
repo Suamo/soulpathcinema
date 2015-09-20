@@ -7,8 +7,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import org.codehaus.jackson.annotate.JsonProperty;
-import shared.Movie;
+import shared.MovieDto;
 
 import static client.SpConstants.DISPLAY_NONE;
 
@@ -38,14 +37,14 @@ public class MovieDetailsScreen extends Composite {
         initWidget(ourUiBinder.createAndBindUi(this));
     }
 
-    public void show(Movie movie) {
+    public void show(MovieDto movie) {
         detailsScreen.removeStyleName(DISPLAY_NONE);
-        titleField.setInnerText(movie.getTitle());
+        titleField.setInnerText(movie.getName());
         directorField.setInnerHTML(movie.getDirector().replaceAll(",", "<br>"));
-        writerField.setInnerHTML(movie.getWriter().replaceAll(",", "<br>"));
-        actorsField.setInnerHTML(movie.getActors().replaceAll(",", "<br>"));
-        awardsField.setInnerHTML(movie.getAwards().replaceAll(",", "<br>"));
-        imdbRatingField.setInnerText(movie.getImdbRating());
+//        writerField.setInnerHTML(movie.getWriter().replaceAll(",", "<br>"));
+//        actorsField.setInnerHTML(movie.getActors().replaceAll(",", "<br>"));
+//        awardsField.setInnerHTML(movie.getAwards().replaceAll(",", "<br>"));
+//        imdbRatingField.setInnerText(movie.getImdbRating());
     }
 
     public void hide() {

@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import server.dao.ImdbMovieDao;
 import server.utils.ImdbLinkBuilder;
-import shared.Movie;
+import shared.MovieJson;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class ImdbMovieDaoImpl implements ImdbMovieDao {
     public static final String IGNORE_ID_PREFIX = "_xz_";
     private static final Logger logger = Logger.getLogger(ImdbMovieDaoImpl.class);
 
-    public Movie getMovie(String imdbId) throws IOException {
+    public MovieJson getMovie(String imdbId) throws IOException {
         if (imdbId.startsWith(IGNORE_ID_PREFIX)) {
             return newUnknownMovie();
         }
@@ -32,13 +32,13 @@ public class ImdbMovieDaoImpl implements ImdbMovieDao {
         HttpGet httpget = new HttpGet(new ImdbLinkBuilder().setId(imdbId).build());
 
         try {
-            logger.info("Getting movie by request: " + httpget.getRequestLine());
+            logger.info("Getting movieJson by request: " + httpget.getRequestLine());
             CloseableHttpResponse responseBody = httpClient.execute(httpget);
 
             ObjectMapper mapper = new ObjectMapper();
-            Movie movie = mapper.readValue(responseBody.getEntity().getContent(), Movie.class);
-            movie.setPoster("/img/movies/" + movie.getId() + ".jpg");
-            return movie;
+            MovieJson movieJson = mapper.readValue(responseBody.getEntity().getContent(), MovieJson.class);
+            movieJson.setPoster("/img/movies/" + movieJson.getId() + ".jpg");
+            return movieJson;
         } finally {
             httpClient.close();
         }
@@ -60,10 +60,10 @@ public class ImdbMovieDaoImpl implements ImdbMovieDao {
         os.close();
     }
 
-    private Movie newUnknownMovie() {
-        Movie movie = new Movie();
-        movie.setTitle("Unknown");
-        movie.setPoster("/img/unknown_token.svg");
-        return movie;
+    private MovieJson newUnknownMovie() {
+        MovieJson movieJson = new MovieJson();
+        movieJson.setTitle("Unknown");
+        movieJson.setPoster("/img/unknown_token.svg");
+        return movieJson;
     }
 }

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by John Silver on 05.15.2015 15:09
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Movie implements Serializable {
+public class MovieJson implements Serializable {
 
     @JsonProperty("imdbID")
     private String id;

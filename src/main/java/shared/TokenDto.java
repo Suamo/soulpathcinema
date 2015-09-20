@@ -10,7 +10,7 @@ public class TokenDto implements Serializable {
     private String imdbId;
     private String x;
     private String y;
-    private Movie movie;
+    private MovieDto movie;
     private String size;
     private String categoryName;
     private String categoryId;
@@ -47,11 +47,11 @@ public class TokenDto implements Serializable {
         this.y = y;
     }
 
-    public Movie getMovie() {
+    public MovieDto getMovie() {
         return movie;
     }
 
-    public void setMovie(Movie movie) {
+    public void setMovie(MovieDto movie) {
         this.movie = movie;
     }
 

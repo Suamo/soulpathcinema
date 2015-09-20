@@ -5,11 +5,15 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
-import server.dao.ImdbMovieDao;
-import server.dao.impl.ImdbMovieDaoImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import server.dao.MainRepo;
+import server.entity.Movie;
 import server.utils.TokensUtils;
 import shared.MapDto;
-import shared.Movie;
+import shared.MovieDto;
 import shared.TokenDto;
 
 import java.io.IOException;
@@ -18,28 +22,49 @@ import java.io.InputStream;
 /**
  * Created by John Silver on 05.14.2015 14:33
  */
+@Service
+@Transactional
 public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppService {
     private static final Logger logger = Logger.getLogger(MainAppServiceImpl.class);
 
-    ImdbMovieDao imdbMovieDao = new ImdbMovieDaoImpl();
+    private ApplicationContext context;
+
+    private MainRepo repository;
+
     private MapDto mapDto;
 
     public MapDto getMap() {
         BasicConfigurator.configure();
-//        if (mapDto != null) {
-//            return mapDto;
-//        }
+        initSpring();
+        mapDto = new MapDto();
+        mapDto.setMap(obtainMap());
+        for (TokenDto dto : TokensUtils.generateTokens()) {
+            dto.setMovie(convertMovie(dto.getDomId(), repository.findByDomId(dto.getDomId())));
+            mapDto.addMovieToken(dto.getDomId(), dto);
+        }
+        return mapDto;
+    }
+
+    private MovieDto convertMovie(String domId, Movie movie) {
+        if (movie == null) {
+            return new MovieDto(null, domId, "Unknown", "Unknown");
+        }
+        return new MovieDto(movie.getId(), domId, movie.getName(), movie.getDirector());
+    }
+
+    private void initSpring() {
+        if (context == null) {
+            context = new AnnotationConfigApplicationContext(AppConfig.class);
+        }
+        if (repository == null) {
+            repository = context.getBean(MainRepo.class);
+        }
+    }
+
+    private String obtainMap() {
         try {
-            mapDto = new MapDto();
             InputStream stream = MainAppServiceImpl.class.getResourceAsStream("/map.svg");
-            String map = IOUtils.toString(stream, "utf-8");
-            mapDto.setMap(map);
-            for (TokenDto dto : TokensUtils.generateTokens()) {
-                Movie movie = imdbMovieDao.getMovie(dto.getImdbId());
-                dto.setMovie(movie);
-                mapDto.addMovieToken(dto.getDomId(), dto);
-            }
-            return mapDto;
+            return IOUtils.toString(stream, "utf-8");
         } catch (IOException e) {
             logger.error(e, e);
             throw new RuntimeException("Unable to obtain Map model. ", e);
