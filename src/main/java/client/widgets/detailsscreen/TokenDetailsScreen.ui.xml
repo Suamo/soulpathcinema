@@ -1,8 +1,8 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:details='urn:import:client.widgets.detailsscreen'>
-    <g:HTMLPanel ui:field="detailsScreen">
-        <div class="glassLayer fullScreen" ui:field="glassLayer"/>
+    <g:HTMLPanel ui:field="detailsScreen" addStyleNames="displayNone">
+        <div class="glassLayer fullScreen"/>
         <div>
             <span ui:field="movieButton" class="grayButton" style="left: 3%">It's a movie</span>|
             <span ui:field="personButton" class="grayButton" style="left: 14%">It's a person</span>

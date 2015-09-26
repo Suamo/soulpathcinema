@@ -5,7 +5,6 @@
             <li style="height:60px">
                 title:
                 <input type="text" placeholder="Add title here" class="editableInput movieTitle" ui:field="titleField"/>
-                <div class="refreshButton" ui:field="refreshButton"/>
             </li>
             <li>
                 imdb id:
@@ -13,7 +12,7 @@
             </li>
             <li>
                 director:
-                <input type="text" placeholder="Add director here" class="editableInput movieDirector" ui:field="directorField"/>
+                <div class="movieDirector" ui:field="directorField"/>
             </li>
             <li>
                 writer:

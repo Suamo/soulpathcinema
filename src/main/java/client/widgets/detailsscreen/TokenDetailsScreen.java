@@ -2,7 +2,6 @@ package client.widgets.detailsscreen;
 
 import client.widgets.MainScreen.SaveTokenListener;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -24,8 +23,6 @@ public class TokenDetailsScreen extends Composite {
     public static final String GRAY_BUTTON = "grayButton";
     @UiField
     HTMLPanel detailsScreen;
-    @UiField
-    DivElement glassLayer;
 
     @UiField
     MovieDetails movieDetails;

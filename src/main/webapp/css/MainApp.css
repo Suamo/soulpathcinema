@@ -155,16 +155,6 @@ ul.movieDetails .movieTitle {
     font-weight: bold;
 }
 
-ul.movieDetails .refreshButton {
-    background-image: url("../img/regresh.png");
-    height: 32px;
-    width: 32px;
-    left: -40px;
-    top: 20px;
-    position: absolute;
-    cursor: pointer;
-}
-
 ul.movieDetails li {
     margin-top: 20px;
 }
