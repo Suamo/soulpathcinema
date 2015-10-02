@@ -35,10 +35,6 @@ public class MainScreen extends Composite {
 
     public static final String DEFAULT_MAIN_TOKEN_IMG = "/img/author.jpg";
     public static final String DEFAULT_TOKEN_IMG = "/img/unknown_token.svg";
-    public static final double SPRITE_SIZE1_MULT = 25.25;
-    public static final double SPRITE_SIZE2_MULT = 31;
-    public static final double SPRITE_SIZE3_MULT = 35;
-    public static final double SPRITE_SIZE4_MULT = 57;
     public static final String SOUL_PATH_CINEMA_LINK = "https://soulpathcinema.wordpress.com/";
 
     @UiField
@@ -167,6 +163,9 @@ public class MainScreen extends Composite {
         token.addClassName("token");
         token.addClassName(tokenDto.getDomId());
         token.addClassName("img-circle circle-size" + tokenDto.getSize());
+        if (tokenDto.getMovie() != null || tokenDto.getPerson() != null) {
+            token.addClassName("solved");
+        }
         token.getStyle().setLeft(offsetLeft, PX);
         token.getStyle().setTop(offsetTop, PX);
 
