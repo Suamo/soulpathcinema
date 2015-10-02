@@ -72,6 +72,10 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
         Token token = repository.findByDomId(tokendto.getDomId());
         if (token == null) {
             token = new Token();
+        } else if (token.getMovie() != null && tokendto.getMovie() == null) {
+            // delete old movie
+        } else if (token.getPerson() != null && tokendto.getPerson() == null) {
+            // delete old person
         }
         token.setDomId(tokendto.getDomId());
         if(tokendto.getPerson() != null) {
