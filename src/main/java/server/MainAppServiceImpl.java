@@ -69,7 +69,10 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
     }
 
     private Token convertTokenDto(TokenDto tokendto) {
-        Token token = new Token();
+        Token token = repository.findByDomId(tokendto.getDomId());
+        if (token == null) {
+            token = new Token();
+        }
         token.setDomId(tokendto.getDomId());
         if(tokendto.getPerson() != null) {
             Person person = new Person();

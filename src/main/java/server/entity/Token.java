@@ -14,9 +14,9 @@ public class Token {
     @Column(name = "dom_id")
     String domId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     Movie movie;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     Person person;
 
     public Token() {

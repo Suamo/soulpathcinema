@@ -67,14 +67,18 @@ public class MovieDetails extends Composite {
         this.token = token;
         removeStyleName(DISPLAY_NONE);
         if (token.getMovie() == null) {
-            token.setPerson(null);
-            token.setMovie(new MovieDto());
+            titleField.setValue("");
+        } else {
+            titleField.setValue(token.getMovie().getName());
+            directorField.setInnerText(token.getMovie().getDirector());
         }
-        titleField.setValue(token.getMovie().getName());
-        directorField.setInnerText(token.getMovie().getDirector());
     }
 
     private void save() {
+        if (token.getMovie() == null) {
+            token.setPerson(null);
+            token.setMovie(new MovieDto());
+        }
         token.getMovie().setName(titleField.getValue());
         token.getMovie().setImdbId(imdbId.getValue());
         saveListener.save(token);

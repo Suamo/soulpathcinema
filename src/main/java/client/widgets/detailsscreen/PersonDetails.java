@@ -42,14 +42,18 @@ public class PersonDetails extends Composite {
     public void show(TokenDto token) {
         this.token = token;
         removeStyleName(DISPLAY_NONE);
+        if (token.getPerson() == null) {
+            nameField.setValue("");
+        } else {
+            nameField.setValue(token.getPerson().getName());
+        }
+    }
+
+    private void save() {
         if (token.getMovie() != null) {
             token.setMovie(null);
             token.setPerson(new PersonDto());
         }
-        nameField.setValue(token.getPerson().getName());
-    }
-
-    private void save() {
         token.getPerson().setName(nameField.getValue());
         saveListener.save(token);
     }

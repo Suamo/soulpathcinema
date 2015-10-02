@@ -43,10 +43,7 @@ public class TokenDetailsScreen extends Composite {
         Event.setEventListener(movieButton, new EventListener() {
             public void onBrowserEvent(Event event) {
                 if(!movieButton.getClassName().contains(BLUE_BUTTON)) {
-                    personButton.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
-                    movieButton.replaceClassName(GRAY_BUTTON, BLUE_BUTTON);
-                    movieDetails.show(token);
-                    personDetails.hide();
+                    showMovieDetails(token);
                 }
             }
         });
@@ -55,10 +52,7 @@ public class TokenDetailsScreen extends Composite {
         Event.setEventListener(personButton, new EventListener() {
             public void onBrowserEvent(Event event) {
                 if(!personButton.getClassName().contains(BLUE_BUTTON)) {
-                    movieButton.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
-                    personButton.replaceClassName(GRAY_BUTTON, BLUE_BUTTON);
-                    personDetails.show(token);
-                    movieDetails.hide();
+                    showPersonDetails(token);
                 }
             }
         });
@@ -66,12 +60,26 @@ public class TokenDetailsScreen extends Composite {
 
     public void show(TokenDto token) {
         this.token = token;
-        detailsScreen.removeStyleName(DISPLAY_NONE);
+        removeStyleName(DISPLAY_NONE);
         if (token.getPerson() != null) {
-            personDetails.removeStyleName(DISPLAY_NONE);
+            showPersonDetails(token);
         } else {
-            movieDetails.removeStyleName(DISPLAY_NONE);
+            showMovieDetails(token);
         }
+    }
+
+    private void showMovieDetails(TokenDto token) {
+        movieDetails.show(token);
+        personButton.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
+        movieButton.replaceClassName(GRAY_BUTTON, BLUE_BUTTON);
+        personDetails.hide();
+    }
+
+    private void showPersonDetails(TokenDto token) {
+        personDetails.show(token);
+        movieButton.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
+        personButton.replaceClassName(GRAY_BUTTON, BLUE_BUTTON);
+        movieDetails.hide();
     }
 
     public void hide() {
