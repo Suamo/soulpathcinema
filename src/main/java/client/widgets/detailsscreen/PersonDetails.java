@@ -11,8 +11,8 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import shared.PersonDto;
-import shared.TokenDto;
+import shared.entity.Person;
+import shared.entity.Token;
 
 import static client.SpConstants.DISPLAY_NONE;
 
@@ -24,7 +24,7 @@ public class PersonDetails extends Composite {
     InputElement nameField;
 
     private SaveTokenListener saveListener;
-    private TokenDto token;
+    private Token token;
 
     public PersonDetails() {
         initWidget(ourUiBinder.createAndBindUi(this));
@@ -39,7 +39,7 @@ public class PersonDetails extends Composite {
         });
     }
 
-    public void show(TokenDto token) {
+    public void show(Token token) {
         this.token = token;
         removeStyleName(DISPLAY_NONE);
         if (token.getPerson() == null) {
@@ -50,9 +50,9 @@ public class PersonDetails extends Composite {
     }
 
     private void save() {
-        if (token.getMovie() != null) {
+        if (token.getPerson() == null) {
             token.setMovie(null);
-            token.setPerson(new PersonDto());
+            token.setPerson(new Person());
         }
         token.getPerson().setName(nameField.getValue());
         saveListener.save(token);

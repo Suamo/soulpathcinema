@@ -10,14 +10,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.dao.TokenRepo;
-import server.entity.Movie;
-import server.entity.Person;
-import server.entity.Token;
-import server.utils.TokensUtils;
 import shared.MapDto;
-import shared.MovieDto;
-import shared.PersonDto;
-import shared.TokenDto;
+import shared.entity.Token;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,61 +33,14 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
 
         MapDto mapDto = new MapDto();
         mapDto.setMap(obtainMap());
-        for (TokenDto dto : TokensUtils.generateTokens()) {
-            Token token = repository.findByDomId(dto.getDomId());
-            if (token != null) {
-                dto.setMovie(convertMovie(token.getMovie()));
-                dto.setPerson(convertPerson(token.getPerson()));
-            }
-            mapDto.addToken(dto.getDomId(), dto);
+        for (Token token : repository.findAll()) {
+            mapDto.addToken(token.getDomId(), token);
         }
         return mapDto;
     }
 
-    private PersonDto convertPerson(Person person) {
-        if (person == null) {
-            return null;
-        }
-        return new PersonDto(person.getId(), person.getName());
-    }
-
-    public void saveToken(TokenDto dto) {
-        repository.save(convertTokenDto(dto));
-    }
-
-    private MovieDto convertMovie(Movie movie) {
-        if (movie == null) {
-            return null;
-        }
-        return new MovieDto(movie.getId(), movie.getName(), movie.getDirector());
-    }
-
-    private Token convertTokenDto(TokenDto tokendto) {
-        Token token = repository.findByDomId(tokendto.getDomId());
-        if (token == null) {
-            token = new Token();
-        } else if (token.getMovie() != null && tokendto.getMovie() == null) {
-            // delete old movie
-        } else if (token.getPerson() != null && tokendto.getPerson() == null) {
-            // delete old person
-        }
-        token.setDomId(tokendto.getDomId());
-        if(tokendto.getPerson() != null) {
-            Person person = new Person();
-            person.setId(tokendto.getPerson().getId());
-            person.setName(tokendto.getPerson().getName());
-            token.setPerson(person);
-            token.setMovie(null);
-        } else {
-            Movie movie = new Movie();
-            movie.setId(tokendto.getMovie().getId());
-            movie.setName(tokendto.getMovie().getName());
-            movie.setDirector(tokendto.getMovie().getDirector());
-            token.setMovie(movie);
-            token.setPerson(null);
-        }
-
-        return token;
+    public void saveToken(Token dto) {
+        repository.save(dto);
     }
 
     private void initApplication() {

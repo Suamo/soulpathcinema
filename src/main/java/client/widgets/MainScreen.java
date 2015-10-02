@@ -18,7 +18,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import shared.MapDto;
-import shared.TokenDto;
+import shared.entity.Token;
 
 import java.util.HashMap;
 
@@ -54,7 +54,7 @@ public class MainScreen extends Composite {
     @UiField
     DivElement mainPoster;
 
-    private HashMap<String, TokenDto> knownMovies;
+    private HashMap<String, Token> knownMovies;
     private boolean initPosterDisplayed = true;
 
     public MainScreen() {
@@ -63,7 +63,7 @@ public class MainScreen extends Composite {
         updatePoster(true, mainPoster, null);
 
         movieDetails.setSaveListener(new SaveTokenListener() {
-            public void save(TokenDto dto) {
+            public void save(Token dto) {
                 MainAppService.App.getInstance().saveToken(dto, new AsyncCallback<Void>() {
                     public void onFailure(Throwable caught) {
                         Window.alert("Cannot save movie. Please check logs.");
@@ -120,7 +120,7 @@ public class MainScreen extends Composite {
 
                 Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
                     public void execute() {
-                        for (TokenDto token : knownMovies.values()) {
+                        for (Token token : knownMovies.values()) {
                             imagesLayer.appendChild(newTokenElement(token));
                         }
                         Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
@@ -157,7 +157,7 @@ public class MainScreen extends Composite {
         return null;
     }
 
-    private Element newTokenElement(TokenDto tokenDto) {
+    private Element newTokenElement(Token tokenDto) {
         Element element = DOM.getElementById(tokenDto.getDomId());
         int offsetLeft = element.getAbsoluteLeft();
         int offsetTop = element.getAbsoluteTop();
@@ -174,23 +174,7 @@ public class MainScreen extends Composite {
         return token;
     }
 
-
-    private double getTokenImagePosition(TokenDto tokenDto) {
-        switch (Integer.valueOf(tokenDto.getSize())) {
-            case 1:
-                return Integer.valueOf(tokenDto.getCategoryId()) * SPRITE_SIZE1_MULT;
-            case 2:
-                return Integer.valueOf(tokenDto.getCategoryId()) * SPRITE_SIZE2_MULT;
-            case 3:
-                return Integer.valueOf(tokenDto.getCategoryId()) * SPRITE_SIZE3_MULT;
-            case 4:
-                return Integer.valueOf(tokenDto.getCategoryId()) * SPRITE_SIZE4_MULT;
-            default:
-                return 0;
-        }
-    }
-
-    private void updatePoster(boolean isMainPoster, Element content, TokenDto tokenDto) {
+    private void updatePoster(boolean isMainPoster, Element content, Token tokenDto) {
         content.getStyle().setProperty("background", "");
         if (tokenDto == null || tokenDto.getCategoryName() == null || tokenDto.getCategoryId() == null) {
             content.getStyle().setBackgroundImage("url('" + (isMainPoster ? DEFAULT_MAIN_TOKEN_IMG : DEFAULT_TOKEN_IMG) + "')");
@@ -208,7 +192,7 @@ public class MainScreen extends Composite {
     }
 
     public static interface SaveTokenListener {
-        void save(TokenDto dto);
+        void save(Token dto);
     }
 
     interface MainScreenUiBinder extends UiBinder<HTMLPanel, MainScreen> {

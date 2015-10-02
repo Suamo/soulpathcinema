@@ -1,13 +1,14 @@
-package server.entity;
+package shared.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by John Silver on 05.19.2015 19:57
  */
 @Entity
 @Table(name = "movie")
-public class Movie {
+public class Movie implements Serializable {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     Integer id;
     String name;

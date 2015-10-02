@@ -1,13 +1,14 @@
-package server.entity;
+package shared.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by John Silver on 20.22.2015 22:17
  */
 @Entity
 @Table(name = "token")
-public class Token {
+public class Token implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Integer id;
@@ -18,6 +19,17 @@ public class Token {
     Movie movie;
     @OneToOne(cascade = CascadeType.ALL)
     Person person;
+
+    @Column(name = "position_x")
+    private String x;
+    @Column(name = "position_y")
+    private String y;
+    @Column
+    private String size;
+    @Column(name = "category_id")
+    private String categoryId;
+    @Column(name = "category_name")
+    private String categoryName;
 
     public Token() {
     }
@@ -52,5 +64,25 @@ public class Token {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public String getX() {
+        return x;
+    }
+
+    public String getY() {
+        return y;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
     }
 }

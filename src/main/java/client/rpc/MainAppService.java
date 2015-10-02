@@ -4,7 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import shared.MapDto;
-import shared.TokenDto;
+import shared.entity.Token;
 
 /**
  * Created by John Silver on 05.14.2015 14:33
@@ -13,7 +13,7 @@ import shared.TokenDto;
 public interface MainAppService extends RemoteService {
     MapDto getMap();
 
-    void saveToken(TokenDto dto);
+    void saveToken(Token dto);
 
     /**
      * Utility/Convenience class.

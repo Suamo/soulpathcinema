@@ -12,8 +12,8 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import shared.MovieDto;
-import shared.TokenDto;
+import shared.entity.Movie;
+import shared.entity.Token;
 
 import static client.SpConstants.DISPLAY_NONE;
 
@@ -36,7 +36,7 @@ public class MovieDetails extends Composite {
     @UiField
     DivElement imdbRatingField;
 
-    private TokenDto token;
+    private Token token;
     private SaveTokenListener saveListener;
 
     public MovieDetails() {
@@ -63,7 +63,7 @@ public class MovieDetails extends Composite {
         });
     }
 
-    public void show(TokenDto token) {
+    public void show(Token token) {
         this.token = token;
         removeStyleName(DISPLAY_NONE);
         if (token.getMovie() == null) {
@@ -77,10 +77,10 @@ public class MovieDetails extends Composite {
     private void save() {
         if (token.getMovie() == null) {
             token.setPerson(null);
-            token.setMovie(new MovieDto());
+            token.setMovie(new Movie());
         }
         token.getMovie().setName(titleField.getValue());
-        token.getMovie().setImdbId(imdbId.getValue());
+//        token.getMovie().setImdbId(imdbId.getValue());
         saveListener.save(token);
     }
 

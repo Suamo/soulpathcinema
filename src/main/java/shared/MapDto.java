@@ -1,5 +1,7 @@
 package shared;
 
+import shared.entity.Token;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -8,7 +10,7 @@ import java.util.HashMap;
  */
 public class MapDto implements Serializable {
     private String map;
-    private HashMap<String, TokenDto> tokens = new HashMap<String, TokenDto>();
+    private HashMap<String, Token> tokens = new HashMap<String, Token>();
 
     public String getMap() {
         return map;
@@ -18,11 +20,11 @@ public class MapDto implements Serializable {
         this.map = map;
     }
 
-    public void addToken(String id, TokenDto token) {
+    public void addToken(String id, Token token) {
         this.tokens.put(id, token);
     }
 
-    public HashMap<String, TokenDto> getTokens() {
+    public HashMap<String, Token> getTokens() {
         return tokens;
     }
 }

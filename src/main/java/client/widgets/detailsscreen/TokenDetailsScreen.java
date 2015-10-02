@@ -10,7 +10,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import shared.TokenDto;
+import shared.entity.Token;
 
 import static client.SpConstants.DISPLAY_NONE;
 
@@ -34,7 +34,7 @@ public class TokenDetailsScreen extends Composite {
     @UiField
     SpanElement personButton;
 
-    private TokenDto token;
+    private Token token;
 
     public TokenDetailsScreen() {
         initWidget(ourUiBinder.createAndBindUi(this));
@@ -58,7 +58,7 @@ public class TokenDetailsScreen extends Composite {
         });
     }
 
-    public void show(TokenDto token) {
+    public void show(Token token) {
         this.token = token;
         removeStyleName(DISPLAY_NONE);
         if (token.getPerson() != null) {
@@ -68,14 +68,14 @@ public class TokenDetailsScreen extends Composite {
         }
     }
 
-    private void showMovieDetails(TokenDto token) {
+    private void showMovieDetails(Token token) {
         movieDetails.show(token);
         personButton.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
         movieButton.replaceClassName(GRAY_BUTTON, BLUE_BUTTON);
         personDetails.hide();
     }
 
-    private void showPersonDetails(TokenDto token) {
+    private void showPersonDetails(Token token) {
         personDetails.show(token);
         movieButton.replaceClassName(BLUE_BUTTON, GRAY_BUTTON);
         personButton.replaceClassName(GRAY_BUTTON, BLUE_BUTTON);

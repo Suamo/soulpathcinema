@@ -1,20 +1,21 @@
-package shared;
+package shared.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by John Silver on 20.21.2015 21:22
+ * Created by John Silver on 20.22.2015 22:17
  */
-public class PersonDto implements Serializable {
-    private Integer id;
-    private String name;
+@Entity
+@Table(name = "person")
+public class Person implements Serializable {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    Integer id;
 
-    public PersonDto() {
-    }
+    String name;
 
-    public PersonDto(Integer id, String name) {
-        this.id = id;
-        this.name = name;
+    public Person() {
     }
 
     public Integer getId() {
