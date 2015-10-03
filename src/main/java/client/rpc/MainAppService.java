@@ -6,6 +6,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import shared.MapDto;
 import shared.entity.Token;
 
+import java.io.IOException;
+
 /**
  * Created by John Silver on 05.14.2015 14:33
  */
@@ -13,7 +15,7 @@ import shared.entity.Token;
 public interface MainAppService extends RemoteService {
     MapDto getMap();
 
-    void saveToken(Token dto);
+    Token saveToken(Token dto) throws IOException;
 
     /**
      * Utility/Convenience class.

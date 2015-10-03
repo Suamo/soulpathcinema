@@ -36,4 +36,6 @@
         </property>
     </bean>
 
+    <bean id="imdbMovieDao" class="server.dao.impl.ImdbMovieDaoImpl"/>
+
 </beans>

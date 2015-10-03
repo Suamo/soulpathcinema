@@ -3,14 +3,18 @@ package server;
 import client.rpc.MainAppService;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.dao.ImdbMovieDao;
 import server.dao.TokenRepo;
 import shared.MapDto;
+import shared.MovieJson;
+import shared.entity.Movie;
 import shared.entity.Token;
 
 import java.io.IOException;
@@ -26,6 +30,7 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
 
     private ApplicationContext context;
 
+    private ImdbMovieDao imdbMovieDao;
     private TokenRepo repository;
 
     public MapDto getMap() {
@@ -39,8 +44,27 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
         return mapDto;
     }
 
-    public void saveToken(Token dto) {
-        repository.save(dto);
+    public Token saveToken(Token token) throws IOException {
+        Movie movie = token.getMovie();
+        if (movie != null)  {
+
+            MovieJson imdbMovie;
+            if (!StringUtils.isBlank(movie.getImdbId())) {
+                imdbMovie = imdbMovieDao.getMovieById(movie.getImdbId());
+            } else {
+                imdbMovie = imdbMovieDao.getMoviesByName(movie.getName());
+            }
+            if (imdbMovie != null) {
+                movie.setName(imdbMovie.getTitle());
+                movie.setDirector(imdbMovie.getDirector());
+                movie.setImdbId(imdbMovie.getId());
+                movie.setImdbRating(imdbMovie.getImdbRating());
+                movie.setActors(imdbMovie.getActors());
+                movie.setAwards(imdbMovie.getAwards());
+                movie.setWriter(imdbMovie.getWriter());
+            }
+        }
+        return repository.save(token);
     }
 
     private void initApplication() {
@@ -50,6 +74,9 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
         }
         if (repository == null) {
             repository = context.getBean(TokenRepo.class);
+        }
+        if (imdbMovieDao == null) {
+            imdbMovieDao = context.getBean(ImdbMovieDao.class);
         }
     }
 

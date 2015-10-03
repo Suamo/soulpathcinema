@@ -70,7 +70,14 @@ public class MovieDetails extends Composite {
             titleField.setValue("");
         } else {
             titleField.setValue(token.getMovie().getName());
+            imdbId.setValue(token.getMovie().getImdbId());
+
             directorField.setInnerText(token.getMovie().getDirector());
+
+            imdbRatingField.setInnerText(token.getMovie().getImdbRating());
+            actorsField.setInnerText(token.getMovie().getActors());
+            awardsField.setInnerText(token.getMovie().getAwards());
+            writerField.setInnerText(token.getMovie().getWriter());
         }
     }
 
@@ -80,7 +87,7 @@ public class MovieDetails extends Composite {
             token.setMovie(new Movie());
         }
         token.getMovie().setName(titleField.getValue());
-//        token.getMovie().setImdbId(imdbId.getValue());
+        token.getMovie().setImdbId(imdbId.getValue());
         saveListener.save(token);
     }
 

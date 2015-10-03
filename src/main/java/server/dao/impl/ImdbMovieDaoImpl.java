@@ -21,15 +21,28 @@ import java.net.URL;
  * See: http://www.omdbapi.com/
  */
 public class ImdbMovieDaoImpl implements ImdbMovieDao {
-    public static final String IGNORE_ID_PREFIX = "_xz_";
     private static final Logger logger = Logger.getLogger(ImdbMovieDaoImpl.class);
 
-    public MovieJson getMovie(String imdbId) throws IOException {
-        if (imdbId.startsWith(IGNORE_ID_PREFIX)) {
-            return newUnknownMovie();
-        }
+    public MovieJson getMovieById(String imdbId) throws IOException {
         CloseableHttpClient httpClient = HttpClients.custom().build();
         HttpGet httpget = new HttpGet(new ImdbLinkBuilder().setId(imdbId).build());
+
+        try {
+            logger.info("Getting movieJson by request: " + httpget.getRequestLine());
+            CloseableHttpResponse responseBody = httpClient.execute(httpget);
+
+            ObjectMapper mapper = new ObjectMapper();
+            MovieJson movieJson = mapper.readValue(responseBody.getEntity().getContent(), MovieJson.class);
+            movieJson.setPoster("/img/movies/" + movieJson.getId() + ".jpg");
+            return movieJson;
+        } finally {
+            httpClient.close();
+        }
+    }
+
+    public MovieJson getMoviesByName(String name) throws IOException {
+        CloseableHttpClient httpClient = HttpClients.custom().build();
+        HttpGet httpget = new HttpGet(new ImdbLinkBuilder().setName(name).build());
 
         try {
             logger.info("Getting movieJson by request: " + httpget.getRequestLine());

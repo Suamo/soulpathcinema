@@ -10,9 +10,17 @@ import java.io.Serializable;
 @Table(name = "movie")
 public class Movie implements Serializable {
     @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-    Integer id;
-    String name;
-    String director;
+    private Integer id;
+    private String name;
+    private String director;
+
+    @Column(name = "imdb_id")
+    private String imdbId;
+    @Column(name = "imdb_rating")
+    private String imdbRating;
+    private String actors;
+    private String awards;
+    private String writer;
 
     public Movie() {
     }
@@ -39,5 +47,45 @@ public class Movie implements Serializable {
 
     public void setDirector(String director) {
         this.director = director;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public String getImdbRating() {
+        return imdbRating;
+    }
+
+    public String getActors() {
+        return actors;
+    }
+
+    public String getAwards() {
+        return awards;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public void setImdbRating(String imdbRating) {
+        this.imdbRating = imdbRating;
+    }
+
+    public void setActors(String actors) {
+        this.actors = actors;
+    }
+
+    public void setAwards(String awards) {
+        this.awards = awards;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 }

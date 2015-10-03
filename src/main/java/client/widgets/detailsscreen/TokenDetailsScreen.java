@@ -59,8 +59,12 @@ public class TokenDetailsScreen extends Composite {
     }
 
     public void show(Token token) {
-        this.token = token;
         removeStyleName(DISPLAY_NONE);
+        updateModel(token);
+    }
+
+    public void updateModel(Token token) {
+        this.token = token;
         if (token.getPerson() != null) {
             showPersonDetails(token);
         } else {

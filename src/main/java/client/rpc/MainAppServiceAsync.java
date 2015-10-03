@@ -10,5 +10,5 @@ import shared.entity.Token;
 public interface MainAppServiceAsync {
     void getMap(AsyncCallback<MapDto> async);
 
-    void saveToken(Token dto, AsyncCallback<Void> async);
+    void saveToken(Token dto, AsyncCallback<Token> async);
 }

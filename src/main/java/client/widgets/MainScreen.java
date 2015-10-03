@@ -67,13 +67,15 @@ public class MainScreen extends Composite {
 
         movieDetails.setSaveListener(new SaveTokenListener() {
             public void save(Token dto) {
-                MainAppService.App.getInstance().saveToken(dto, new AsyncCallback<Void>() {
+                MainAppService.App.getInstance().saveToken(dto, new AsyncCallback<Token>() {
                     public void onFailure(Throwable caught) {
                         showTemoraryPopup(wrongSavingInfoBox);
                     }
 
-                    public void onSuccess(Void result) {
+                    public void onSuccess(Token token) {
                         showTemoraryPopup(successSavingInfoBox);
+                        knownMovies.put(token.getDomId(), token);
+                        movieDetails.updateModel(token);
                     }
                 });
             }
