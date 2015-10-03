@@ -1,5 +1,7 @@
 package shared.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -14,6 +16,10 @@ public class Person implements Serializable {
     Integer id;
 
     String name;
+
+    @Column(name = "is_director", columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean isDirector;
 
     public Person() {
     }
@@ -32,5 +38,13 @@ public class Person implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setIsDirector(boolean isDirector) {
+        this.isDirector = isDirector;
+    }
+
+    public boolean isDirector() {
+        return isDirector;
     }
 }

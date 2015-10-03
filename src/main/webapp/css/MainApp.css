@@ -68,7 +68,8 @@ svg {
     text-decoration: underline;
 }
 
-.movieCountry:hover {
+.movieCountry:hover,
+.directorFilter:hover {
     text-decoration: underline;
     cursor: pointer;
 }

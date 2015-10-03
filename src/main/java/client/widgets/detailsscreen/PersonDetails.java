@@ -4,6 +4,7 @@ import client.widgets.MainScreen;
 import client.widgets.MainScreen.SaveTokenListener;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -23,6 +24,10 @@ import static client.SpConstants.DISPLAY_NONE;
 public class PersonDetails extends Composite {
     @UiField
     InputElement nameField;
+    @UiField
+    SpanElement directorFilter;
+    @UiField
+    InputElement isDirectorCheckbox;
 
     private SaveTokenListener saveListener;
     private Token token;
@@ -39,6 +44,20 @@ public class PersonDetails extends Composite {
                 }
             }
         });
+
+        DOM.sinkEvents(directorFilter, Event.ONCLICK);
+        Event.setEventListener(directorFilter, new EventListener() {
+            public void onBrowserEvent(Event event) {
+                changeFilterListener.filter(MainScreen.FilterType.DIRECTOR, nameField.getValue());
+            }
+        });
+
+        DOM.sinkEvents(isDirectorCheckbox, Event.ONCLICK);
+        Event.setEventListener(isDirectorCheckbox, new EventListener() {
+            public void onBrowserEvent(Event event) {
+                save();
+            }
+        });
     }
 
     public void show(Token token) {
@@ -48,6 +67,7 @@ public class PersonDetails extends Composite {
             nameField.setValue("");
         } else {
             nameField.setValue(token.getPerson().getName());
+            isDirectorCheckbox.setChecked(token.getPerson().isDirector());
         }
     }
 
@@ -57,6 +77,7 @@ public class PersonDetails extends Composite {
             token.setPerson(new Person());
         }
         token.getPerson().setName(nameField.getValue());
+        token.getPerson().setIsDirector(isDirectorCheckbox.isChecked());
         saveListener.save(token);
     }
 

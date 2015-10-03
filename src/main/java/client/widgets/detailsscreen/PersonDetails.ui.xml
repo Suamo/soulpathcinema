@@ -6,10 +6,10 @@
                 Name:
                 <input type="text" placeholder="Add person name here" class="editableInput personName" ui:field="nameField"/>
             </li>
-            <!--<li>-->
-                <!--imdb id:-->
-                <!--<div class="imdbId" ui:field="imdbId"/>-->
-            <!--</li>-->
+            <li style="height:60px">
+                <span ui:field="directorFilter" class="directorFilter">Is Director:</span>
+                <input type="checkbox" ui:field="isDirectorCheckbox"/>
+            </li>
         </ul>
     </g:HTMLPanel>
 </ui:UiBinder>
