@@ -30,6 +30,10 @@
                 <div class="movieAwards" ui:field="awardsField"/>
             </li>
             <li>
+                country:
+                <div class="movieCountry" ui:field="countryField"/>
+            </li>
+            <li>
                 imdb:
                 <div class="movieImdbRating" ui:field="imdbRatingField"/>
             </li>

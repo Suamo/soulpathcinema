@@ -32,6 +32,9 @@ public class MovieJson implements Serializable {
     @JsonProperty("Awards")
     private String awards;
 
+    @JsonProperty("Country")
+    private String country;
+
     @JsonProperty("imdbRating")
     private String imdbRating;
 
@@ -97,5 +100,13 @@ public class MovieJson implements Serializable {
 
     public void setImdbRating(String imdbRating) {
         this.imdbRating = imdbRating;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

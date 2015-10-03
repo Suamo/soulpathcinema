@@ -62,6 +62,7 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
                 movie.setActors(imdbMovie.getActors());
                 movie.setAwards(imdbMovie.getAwards());
                 movie.setWriter(imdbMovie.getWriter());
+                movie.setCountry(imdbMovie.getCountry());
             }
         }
         return repository.save(token);

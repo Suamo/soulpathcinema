@@ -21,6 +21,7 @@ public class Movie implements Serializable {
     private String actors;
     private String awards;
     private String writer;
+    private String country;
 
     public Movie() {
     }
@@ -87,5 +88,13 @@ public class Movie implements Serializable {
 
     public void setWriter(String writer) {
         this.writer = writer;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCountry() {
+        return country;
     }
 }

@@ -1,5 +1,6 @@
 package client.widgets.detailsscreen;
 
+import client.widgets.MainScreen;
 import client.widgets.MainScreen.SaveTokenListener;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.InputElement;
@@ -25,6 +26,7 @@ public class PersonDetails extends Composite {
 
     private SaveTokenListener saveListener;
     private Token token;
+    private MainScreen.ChangeFilterListener changeFilterListener;
 
     public PersonDetails() {
         initWidget(ourUiBinder.createAndBindUi(this));
@@ -65,6 +67,10 @@ public class PersonDetails extends Composite {
 
     public void setSaveListener(SaveTokenListener saveListener) {
         this.saveListener = saveListener;
+    }
+
+    public void setChangeFilterListener(MainScreen.ChangeFilterListener changeFilterListener) {
+        this.changeFilterListener = changeFilterListener;
     }
 
     interface PersonDetailsUiBinder extends UiBinder<HTMLPanel, PersonDetails> {

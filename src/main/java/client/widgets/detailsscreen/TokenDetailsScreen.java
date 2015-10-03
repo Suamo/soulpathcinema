@@ -1,5 +1,6 @@
 package client.widgets.detailsscreen;
 
+import client.widgets.MainScreen;
 import client.widgets.MainScreen.SaveTokenListener;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.SpanElement;
@@ -95,6 +96,11 @@ public class TokenDetailsScreen extends Composite {
     public void setSaveListener(SaveTokenListener saveListener) {
         movieDetails.setSaveListener(saveListener);
         personDetails.setSaveListener(saveListener);
+    }
+
+    public void setChangeFilterListener(MainScreen.ChangeFilterListener changeFilterListener) {
+        movieDetails.setChangeFilterListener(changeFilterListener);
+        personDetails.setChangeFilterListener(changeFilterListener);
     }
 
     interface MovieDetailsScreenUiBinder extends UiBinder<HTMLPanel, TokenDetailsScreen> {

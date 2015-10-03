@@ -8,6 +8,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
@@ -38,6 +39,7 @@ public class MainScreen extends Composite {
     public static final String SOUL_PATH_CINEMA_LINK = "https://soulpathcinema.wordpress.com/";
     public static final String POPUP_SHOW = "show";
     public static final String POPUP_HIDE = "hide";
+    public static final String DEFAULT_FILTER_STATE = "Solved";
 
     @UiField
     DivElement loadingScreen;
@@ -48,7 +50,7 @@ public class MainScreen extends Composite {
     @UiField
     DivElement mandala;
     @UiField
-    TokenDetailsScreen movieDetails;
+    TokenDetailsScreen tokenDetails;
     @UiField
     DivElement mainPoster;
 
@@ -56,16 +58,20 @@ public class MainScreen extends Composite {
     DivElement successSavingInfoBox;
     @UiField
     DivElement wrongSavingInfoBox;
+    @UiField
+    SpanElement filterIndicator;
 
     private HashMap<String, Token> knownMovies;
     private boolean initPosterDisplayed = true;
+    private FilterType filterType = FilterType.AVAILABILITY;
+    private String filterValue = "";
 
     public MainScreen() {
         initWidget(ourUiBinder.createAndBindUi(this));
 
         updatePoster(true, mainPoster, null);
 
-        movieDetails.setSaveListener(new SaveTokenListener() {
+        tokenDetails.setSaveListener(new SaveTokenListener() {
             public void save(Token dto) {
                 MainAppService.App.getInstance().saveToken(dto, new AsyncCallback<Token>() {
                     public void onFailure(Throwable caught) {
@@ -75,9 +81,15 @@ public class MainScreen extends Composite {
                     public void onSuccess(Token token) {
                         showTemoraryPopup(successSavingInfoBox);
                         knownMovies.put(token.getDomId(), token);
-                        movieDetails.updateModel(token);
+                        tokenDetails.updateModel(token);
                     }
                 });
+            }
+        });
+
+        tokenDetails.setChangeFilterListener(new ChangeFilterListener() {
+            public void filter(FilterType type, String value) {
+                filterTokens(type, value);
             }
         });
 
@@ -106,7 +118,7 @@ public class MainScreen extends Composite {
                             }
                             String id = element.getId();
                             if (id != null) {
-                                movieDetails.show(knownMovies.get(id));
+                                tokenDetails.show(knownMovies.get(id));
                             }
                         }
                     }
@@ -119,30 +131,20 @@ public class MainScreen extends Composite {
                             Window.open(SOUL_PATH_CINEMA_LINK, "_blank", "");
                             return;
                         }
-                        movieDetails.hide();
+                        tokenDetails.hide();
+                    }
+                });
+
+                DOM.sinkEvents(filterIndicator, Event.ONCLICK);
+                Event.setEventListener(filterIndicator, new EventListener() {
+                    public void onBrowserEvent(Event event) {
+                        filterTokens(FilterType.AVAILABILITY, DEFAULT_FILTER_STATE);
                     }
                 });
 
                 Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
                     public void execute() {
-                        for (Token token : knownMovies.values()) {
-                            imagesLayer.appendChild(newTokenElement(token));
-                        }
-                        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
-                            public boolean execute() {
-                                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-                                    public void execute() {
-                                        SpUtils.listenToNativeEvent(SpUtils.ANIMATION_EVENT, loadingScreen, new EventListener() {
-                                            public void onBrowserEvent(Event event) {
-                                                loadingScreen.addClassName(DISPLAY_NONE);
-                                            }
-                                        });
-                                        loadingScreen.addClassName("hide");
-                                    }
-                                });
-                                return false;
-                            }
-                        }, 1000);
+                        updateModel();
                     }
                 });
             }
@@ -151,6 +153,36 @@ public class MainScreen extends Composite {
                 System.out.println(caught.getMessage());
             }
         });
+    }
+
+    private void filterTokens(FilterType type, String value) {
+        filterType = type;
+        filterValue = value;
+        filterIndicator.setInnerText(value);
+        tokenDetails.hide();
+        updateModel();
+    }
+
+    private void updateModel() {
+        imagesLayer.setInnerHTML(null);
+        for (Token token : knownMovies.values()) {
+            imagesLayer.appendChild(newTokenElement(token));
+        }
+        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+            public boolean execute() {
+                Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+                    public void execute() {
+                        SpUtils.listenToNativeEvent(SpUtils.ANIMATION_EVENT, loadingScreen, new EventListener() {
+                            public void onBrowserEvent(Event event) {
+                                loadingScreen.addClassName(DISPLAY_NONE);
+                            }
+                        });
+                        loadingScreen.addClassName("hide");
+                    }
+                });
+                return false;
+            }
+        }, 1000);
     }
 
     private void showTemoraryPopup(final DivElement infoBox) {
@@ -183,8 +215,14 @@ public class MainScreen extends Composite {
         token.addClassName("token");
         token.addClassName(tokenDto.getDomId());
         token.addClassName("img-circle circle-size" + tokenDto.getSize());
-        if (tokenDto.getMovie() != null || tokenDto.getPerson() != null) {
+        if (filterType == FilterType.AVAILABILITY &&
+                (tokenDto.getMovie() != null || tokenDto.getPerson() != null)) {
             token.addClassName("solved");
+            System.out.println(">>>>>> AVAILABILITY");
+        } else if (filterType == FilterType.COUNTRY && tokenDto.getMovie() != null &&
+                tokenDto.getMovie().getCountry() != null && filterValue.equals(tokenDto.getMovie().getCountry())) {
+            token.addClassName("solved");
+            System.out.println(">>>>>> COUNTRY");
         }
         token.getStyle().setLeft(offsetLeft, PX);
         token.getStyle().setTop(offsetTop, PX);
@@ -210,8 +248,16 @@ public class MainScreen extends Composite {
         return "/MainApp/ImageServlet?category=" + category + "&id=" + id;
     }
 
-    public static interface SaveTokenListener {
+    public interface SaveTokenListener {
         void save(Token dto);
+    }
+
+    public interface ChangeFilterListener {
+        void filter(FilterType type, String value);
+    }
+
+    public enum FilterType {
+        AVAILABILITY, DIRECTOR, ACTOR, WRITER, COUNTRY
     }
 
     interface MainScreenUiBinder extends UiBinder<HTMLPanel, MainScreen> {

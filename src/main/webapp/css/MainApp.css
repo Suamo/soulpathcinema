@@ -50,6 +50,36 @@ svg {
     z-index: 1;
 }
 
+.filterIndicator{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-left: auto;
+    width: 250px;
+    z-index: 1;
+    cursor: pointer;
+    height: 20px;
+    margin-right: auto;
+}
+
+.filterIndicator:hover span {
+    text-decoration: underline;
+}
+
+.movieCountry:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.filterIndicator:hover span.filterClearButton {
+    text-decoration: underline;
+    color: red;
+    font-weight: bold;
+    display: inline;
+}
+
 .successSavingInfoBox,
 .wrongSavingInfoBox {
     z-index: 10;

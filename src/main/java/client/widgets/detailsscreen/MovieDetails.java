@@ -1,5 +1,6 @@
 package client.widgets.detailsscreen;
 
+import client.widgets.MainScreen;
 import client.widgets.MainScreen.SaveTokenListener;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
@@ -36,6 +37,8 @@ public class MovieDetails extends Composite {
     @UiField
     DivElement awardsField;
     @UiField
+    DivElement countryField;
+    @UiField
     DivElement imdbRatingField;
 
     @UiField
@@ -43,6 +46,7 @@ public class MovieDetails extends Composite {
 
     private Token token;
     private SaveTokenListener saveListener;
+    private MainScreen.ChangeFilterListener changeFilterListener;
 
     public MovieDetails() {
         initWidget(ourUiBinder.createAndBindUi(this));
@@ -77,6 +81,15 @@ public class MovieDetails extends Composite {
                 Window.open("http://www.imdb.com/title/" + movie.getImdbId(), "_blank", "");
             }
         });
+
+        DOM.sinkEvents(countryField, Event.ONCLICK);
+        Event.setEventListener(countryField, new EventListener() {
+            public void onBrowserEvent(Event event) {
+                if (!countryField.getInnerText().trim().isEmpty()) {
+                    changeFilterListener.filter(MainScreen.FilterType.COUNTRY, countryField.getInnerText());
+                }
+            }
+        });
     }
 
     public void show(Token token) {
@@ -94,6 +107,7 @@ public class MovieDetails extends Composite {
             actorsField.setInnerText(token.getMovie().getActors());
             awardsField.setInnerText(token.getMovie().getAwards());
             writerField.setInnerText(token.getMovie().getWriter());
+            countryField.setInnerText(token.getMovie().getCountry());
         }
     }
 
@@ -119,6 +133,10 @@ public class MovieDetails extends Composite {
 
     public void setSaveListener(SaveTokenListener saveListener) {
         this.saveListener = saveListener;
+    }
+
+    public void setChangeFilterListener(MainScreen.ChangeFilterListener changeFilterListener) {
+        this.changeFilterListener = changeFilterListener;
     }
 
     interface MovieDetailsUiBinder extends UiBinder<HTMLPanel, MovieDetails> {
