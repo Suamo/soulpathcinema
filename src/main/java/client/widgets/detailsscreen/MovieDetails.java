@@ -10,12 +10,14 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import shared.entity.Movie;
 import shared.entity.Token;
 
 import static client.SpConstants.DISPLAY_NONE;
+import static java.util.Arrays.asList;
 
 /**
  * Created by John Silver on 20.20.2015 20:36
@@ -35,6 +37,9 @@ public class MovieDetails extends Composite {
     DivElement awardsField;
     @UiField
     DivElement imdbRatingField;
+
+    @UiField
+    DivElement imdbRedirection;
 
     private Token token;
     private SaveTokenListener saveListener;
@@ -59,6 +64,17 @@ public class MovieDetails extends Composite {
                     save();
                     titleField.focus();
                 }
+            }
+        });
+
+        DOM.sinkEvents(imdbRedirection, Event.ONCLICK);
+        Event.setEventListener(imdbRedirection, new EventListener() {
+            public void onBrowserEvent(Event event) {
+                Movie movie = token.getMovie();
+                if (movie == null || movie.getImdbId() == null || movie.getImdbId().trim().length() == 0) {
+                    return;
+                }
+                Window.open("http://www.imdb.com/title/" + movie.getImdbId(), "_blank", "");
             }
         });
     }
@@ -93,7 +109,12 @@ public class MovieDetails extends Composite {
 
     public void hide() {
         addStyleName(DISPLAY_NONE);
-        titleField.setInnerText("");
+        for (InputElement field : asList(titleField, imdbId)) {
+            field.setValue("");
+        }
+        for (DivElement field : asList(directorField, writerField, actorsField, awardsField, imdbRatingField)) {
+            field.setInnerText("");
+        }
     }
 
     public void setSaveListener(SaveTokenListener saveListener) {

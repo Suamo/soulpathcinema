@@ -8,7 +8,10 @@
             </li>
             <li>
                 imdb id:
-                <input type="text" placeholder="Add IMDB id here" class="editableInput imdbId" ui:field="imdbId"/>
+                <div>
+                    <input type="text" placeholder="Add IMDB id here" class="editableInput imdbId" ui:field="imdbId"/>
+                    <div class="imdbRedirection" ui:field="imdbRedirection"/>
+                </div>
             </li>
             <li>
                 director:
