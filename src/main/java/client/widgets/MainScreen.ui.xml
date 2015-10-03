@@ -13,5 +13,11 @@
             <div ui:field="mainPoster" class="circle-main img-circle"/>
         </div>
         <details:TokenDetailsScreen ui:field="movieDetails"/>
+        <div ui:field="successSavingInfoBox" class="successSavingInfoBox">
+            Token has been saved successfully
+        </div>
+        <div ui:field="wrongSavingInfoBox" class="wrongSavingInfoBox">
+            Token saving has been failed
+        </div>
     </g:HTMLPanel>
 </ui:UiBinder>

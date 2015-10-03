@@ -36,6 +36,8 @@ public class MainScreen extends Composite {
     public static final String DEFAULT_MAIN_TOKEN_IMG = "/img/author.jpg";
     public static final String DEFAULT_TOKEN_IMG = "/img/unknown_token.svg";
     public static final String SOUL_PATH_CINEMA_LINK = "https://soulpathcinema.wordpress.com/";
+    public static final String POPUP_SHOW = "show";
+    public static final String POPUP_HIDE = "hide";
 
     @UiField
     DivElement loadingScreen;
@@ -50,6 +52,11 @@ public class MainScreen extends Composite {
     @UiField
     DivElement mainPoster;
 
+    @UiField
+    DivElement successSavingInfoBox;
+    @UiField
+    DivElement wrongSavingInfoBox;
+
     private HashMap<String, Token> knownMovies;
     private boolean initPosterDisplayed = true;
 
@@ -62,11 +69,11 @@ public class MainScreen extends Composite {
             public void save(Token dto) {
                 MainAppService.App.getInstance().saveToken(dto, new AsyncCallback<Void>() {
                     public void onFailure(Throwable caught) {
-                        Window.alert("Cannot save movie. Please check logs.");
+                        showTemoraryPopup(wrongSavingInfoBox);
                     }
 
                     public void onSuccess(Void result) {
-
+                        showTemoraryPopup(successSavingInfoBox);
                     }
                 });
             }
@@ -142,6 +149,17 @@ public class MainScreen extends Composite {
                 System.out.println(caught.getMessage());
             }
         });
+    }
+
+    private void showTemoraryPopup(final DivElement infoBox) {
+        infoBox.removeClassName(POPUP_HIDE);
+        infoBox.addClassName(POPUP_SHOW);
+        Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {
+            public boolean execute() {
+                infoBox.addClassName(POPUP_HIDE);
+                return false;
+            }
+        }, 2000);
     }
 
     private Element getEventTarget(Event event) {

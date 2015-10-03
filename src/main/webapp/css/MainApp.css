@@ -37,6 +37,50 @@ svg {
     z-index: 1;
 }
 
+.successSavingInfoBox,
+.wrongSavingInfoBox {
+    z-index: 10;
+    position: absolute;
+    bottom: 10px;
+    width: 300px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: white;
+    padding: 10px;
+    opacity: 0;
+}
+
+.successSavingInfoBox.show,
+.wrongSavingInfoBox.show {
+    -webkit-animation-name: showPopup;
+    -webkit-animation-duration: 4s;
+}
+
+.successSavingInfoBox.hide,
+.wrongSavingInfoBox.hide {
+    -webkit-animation-name: hidePopup;
+    -webkit-animation-duration: 4s;
+}
+
+@-webkit-keyframes showPopup {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@-webkit-keyframes hidePopup {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+
+.successSavingInfoBox {
+    border: 3px solid green;
+}
+
+.wrongSavingInfoBox {
+    border: 3px solid red;
+}
+
 .img-circle {
     border-radius: 50%;
     position: absolute;
