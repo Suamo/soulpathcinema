@@ -19,6 +19,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import shared.MapDto;
+import shared.entity.Movie;
+import shared.entity.Person;
 import shared.entity.Token;
 
 import java.util.HashMap;
@@ -63,7 +65,7 @@ public class MainScreen extends Composite {
 
     private HashMap<String, Token> knownMovies;
     private boolean initPosterDisplayed = true;
-    private FilterType filterType = FilterType.AVAILABILITY;
+    private FilterType filterType = FilterType.NONE;
     private String filterValue = "";
 
     public MainScreen() {
@@ -215,20 +217,34 @@ public class MainScreen extends Composite {
         token.addClassName("token");
         token.addClassName(tokenDto.getDomId());
         token.addClassName("img-circle circle-size" + tokenDto.getSize());
-        if (filterType == FilterType.AVAILABILITY &&
-                (tokenDto.getMovie() != null || tokenDto.getPerson() != null)) {
+        if (filterType == FilterType.NONE || isSolved(tokenDto) || isFiltredCountry(tokenDto) || isFiltredDirector(tokenDto)) {
             token.addClassName("solved");
-            System.out.println(">>>>>> AVAILABILITY");
-        } else if (filterType == FilterType.COUNTRY && tokenDto.getMovie() != null &&
-                tokenDto.getMovie().getCountry() != null && filterValue.equals(tokenDto.getMovie().getCountry())) {
-            token.addClassName("solved");
-            System.out.println(">>>>>> COUNTRY");
         }
         token.getStyle().setLeft(offsetLeft, PX);
         token.getStyle().setTop(offsetTop, PX);
 
         updatePoster(false, token, tokenDto);
         return token;
+    }
+
+    private boolean isFiltredDirector(Token tokenDto) {
+        Movie movie = tokenDto.getMovie();
+        Person person = tokenDto.getPerson();
+        return (filterType == FilterType.DIRECTOR && movie != null &&
+                movie.getDirector() != null &&
+                movie.getDirector().contains(filterValue)) ||
+                (person != null && person.getName() != null && person.getName().equals(filterValue));
+    }
+
+    private boolean isFiltredCountry(Token tokenDto) {
+        return filterType == FilterType.COUNTRY && tokenDto.getMovie() != null &&
+                tokenDto.getMovie().getCountry() != null &&
+                tokenDto.getMovie().getCountry().equals(filterValue);
+    }
+
+    private boolean isSolved(Token tokenDto) {
+        return filterType == FilterType.AVAILABILITY &&
+                (tokenDto.getMovie() != null || tokenDto.getPerson() != null);
     }
 
     private void updatePoster(boolean isMainPoster, Element content, Token tokenDto) {
@@ -257,7 +273,7 @@ public class MainScreen extends Composite {
     }
 
     public enum FilterType {
-        AVAILABILITY, DIRECTOR, ACTOR, WRITER, COUNTRY
+        NONE, AVAILABILITY, DIRECTOR, ACTOR, WRITER, COUNTRY
     }
 
     interface MainScreenUiBinder extends UiBinder<HTMLPanel, MainScreen> {

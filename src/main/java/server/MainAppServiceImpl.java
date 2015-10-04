@@ -54,7 +54,7 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
             } else {
                 imdbMovie = imdbMovieDao.getMoviesByName(movie.getName());
             }
-            if (imdbMovie != null) {
+            if (imdbMovie != null && imdbMovie.getId() != null) {
                 movie.setName(imdbMovie.getTitle());
                 movie.setDirector(imdbMovie.getDirector());
                 movie.setImdbId(imdbMovie.getId());

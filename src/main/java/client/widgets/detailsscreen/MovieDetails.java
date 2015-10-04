@@ -90,6 +90,15 @@ public class MovieDetails extends Composite {
                 }
             }
         });
+
+        DOM.sinkEvents(directorField, Event.ONCLICK);
+        Event.setEventListener(directorField, new EventListener() {
+            public void onBrowserEvent(Event event) {
+                if (!directorField.getInnerText().trim().isEmpty()) {
+                    changeFilterListener.filter(MainScreen.FilterType.DIRECTOR, directorField.getInnerText());
+                }
+            }
+        });
     }
 
     public void show(Token token) {
