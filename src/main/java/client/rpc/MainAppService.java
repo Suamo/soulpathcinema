@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import shared.MapDto;
+import shared.UserDto;
 import shared.entity.Token;
 
 import java.io.IOException;
@@ -13,9 +14,12 @@ import java.io.IOException;
  */
 @RemoteServiceRelativePath("MainAppService")
 public interface MainAppService extends RemoteService {
-    MapDto getMap();
+    MapDto getMap(UserDto user);
 
     Token saveToken(Token dto) throws IOException;
+
+    UserDto logIn(String email, String psw);
+    UserDto singIn(String email, String psw);
 
     /**
      * Utility/Convenience class.

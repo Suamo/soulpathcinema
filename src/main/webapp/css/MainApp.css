@@ -82,8 +82,30 @@ svg {
     display: inline;
 }
 
+.loginInfoBox input,
+.loginInfoBox .textButton {
+    width: 147px;
+    display: inline-block;
+}
+
+.loginInfoBox input.error {
+    border: 1px red solid;
+}
+
+.loginInfoBox .textButton {
+    text-align: center;
+    padding-top: 10px;
+    cursor: pointer;
+}
+
+.loginInfoBox .textButton:hover {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .successSavingInfoBox,
-.wrongSavingInfoBox {
+.wrongSavingInfoBox,
+.loginInfoBox {
     z-index: 10;
     position: absolute;
     bottom: 10px;
@@ -108,6 +130,10 @@ svg {
     -webkit-animation-duration: 4s;
 }
 
+.loginInfoBox.show {
+    opacity: 1;
+}
+
 @-webkit-keyframes showPopup {
     from {opacity: 0;}
     to {opacity: 1;}
@@ -124,6 +150,11 @@ svg {
 
 .wrongSavingInfoBox {
     border: 3px solid red;
+}
+
+
+.loginInfoBox {
+    border: 3px solid blue;
 }
 
 .img-circle {
@@ -300,4 +331,22 @@ ul.movieDetails li {
     z-index: 3;
     color: aqua;
     cursor: pointer;
+}
+
+.singInInitButton {
+    position: absolute;
+    background-color: red;
+    width: 70px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.singInInitButton.logged {
+    background-color: greenyellow;
 }

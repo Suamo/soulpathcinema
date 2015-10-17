@@ -9,6 +9,7 @@ import java.util.HashMap;
  * Created by John Silver on 08.23.2015 23:05
  */
 public class MapDto implements Serializable {
+    private UserDto user;
     private String map;
     private HashMap<String, Token> tokens = new HashMap<String, Token>();
 
@@ -27,4 +28,13 @@ public class MapDto implements Serializable {
     public HashMap<String, Token> getTokens() {
         return tokens;
     }
+
+    public void setUser(UserDto user) {
+        this.user = user;
+    }
+
+    public UserDto getUser() {
+        return user;
+    }
+
 }

@@ -5,10 +5,7 @@ import client.rpc.MainAppService;
 import client.widgets.detailsscreen.TokenDetailsScreen;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.EventTarget;
-import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.dom.client.*;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
@@ -19,6 +16,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import shared.MapDto;
+import shared.UserDto;
 import shared.entity.Movie;
 import shared.entity.Person;
 import shared.entity.Token;
@@ -42,6 +40,8 @@ public class MainScreen extends Composite {
     public static final String POPUP_SHOW = "show";
     public static final String POPUP_HIDE = "hide";
     public static final String DEFAULT_FILTER_STATE = "Solved";
+    public static final String LOGGED = "logged";
+    public static final String ERROR = "error";
 
     @UiField
     DivElement loadingScreen;
@@ -61,12 +61,25 @@ public class MainScreen extends Composite {
     @UiField
     DivElement wrongSavingInfoBox;
     @UiField
+    DivElement loginInfoBox;
+    @UiField
     SpanElement filterIndicator;
+    @UiField
+    DivElement singInInitButton;
+    @UiField
+    DivElement singIn;
+    @UiField
+    DivElement logIn;
+    @UiField
+    InputElement emailField;
+    @UiField
+    InputElement passwordField;
 
     private HashMap<String, Token> knownMovies;
     private boolean initPosterDisplayed = true;
     private FilterType filterType = FilterType.NONE;
     private String filterValue = "";
+    private UserDto user;
 
     public MainScreen() {
         initWidget(ourUiBinder.createAndBindUi(this));
@@ -77,11 +90,11 @@ public class MainScreen extends Composite {
             public void save(Token dto) {
                 MainAppService.App.getInstance().saveToken(dto, new AsyncCallback<Token>() {
                     public void onFailure(Throwable caught) {
-                        showTemoraryPopup(wrongSavingInfoBox);
+                        showTemporaryPopup(wrongSavingInfoBox);
                     }
 
                     public void onSuccess(Token token) {
-                        showTemoraryPopup(successSavingInfoBox);
+                        showTemporaryPopup(successSavingInfoBox);
                         knownMovies.put(token.getDomId(), token);
                         tokenDetails.updateModel(token);
                     }
@@ -95,8 +108,104 @@ public class MainScreen extends Composite {
             }
         });
 
-        MainAppService.App.getInstance().getMap(new AsyncCallback<MapDto>() {
+        reloadModel(null);
+
+        DOM.sinkEvents(singInInitButton, Event.ONCLICK);
+        Event.setEventListener(singInInitButton, new EventListener() {
+            public void onBrowserEvent(Event event) {
+                //todo do not react if logged in
+                loginInfoBox.addClassName("show");
+            }
+        });
+
+        DOM.sinkEvents(singIn, Event.ONCLICK);
+        Event.setEventListener(singIn, new EventListener() {
+            public void onBrowserEvent(Event event) {
+                if (!isCredentialsValid()) {
+                    return;
+                }
+                MainAppService.App.getInstance().singIn(emailField.getValue(), passwordField.getValue(), new AsyncCallback<UserDto>() {
+                    public void onFailure(Throwable caught) {
+                        passwordField.addClassName(ERROR);
+                        emailField.addClassName(ERROR);
+                    }
+
+                    public void onSuccess(UserDto user) {
+                        if (user == null) {
+                            passwordField.addClassName(ERROR);
+                            emailField.addClassName(ERROR);
+                            return;
+                        } else {
+                            passwordField.removeClassName(ERROR);
+                            emailField.removeClassName(ERROR);
+                        }
+                        reloadModel(user);
+                        loginInfoBox.removeClassName("show");
+                        //todo clear email and password fields
+                    }
+                });
+            }
+        });
+
+        DOM.sinkEvents(logIn, Event.ONCLICK);
+        Event.setEventListener(logIn, new EventListener() {
+            public void onBrowserEvent(Event event) {
+                if (!isCredentialsValid()) {
+                    return;
+                }
+                MainAppService.App.getInstance().logIn(emailField.getValue(), passwordField.getValue(), new AsyncCallback<UserDto>() {
+                    public void onFailure(Throwable caught) {
+                        passwordField.addClassName(ERROR);
+                        emailField.addClassName(ERROR);
+                    }
+
+                    public void onSuccess(UserDto user) {
+                        if (user == null) {
+                            passwordField.addClassName(ERROR);
+                            emailField.addClassName(ERROR);
+                            return;
+                        } else {
+                            passwordField.removeClassName(ERROR);
+                            emailField.removeClassName(ERROR);
+                        }
+                        reloadModel(user);
+                        loginInfoBox.removeClassName("show");
+                        //todo clear email and password fields
+                    }
+                });
+            }
+        });
+    }
+
+    private boolean isCredentialsValid() {
+        if (!isEmailValid(emailField.getValue())) {
+            emailField.addClassName(ERROR);
+            return false;
+        }
+        emailField.removeClassName(ERROR);
+        if (passwordField.getValue().isEmpty()) {
+            passwordField.addClassName(ERROR);
+            return false;
+        }
+        passwordField.removeClassName(ERROR);
+        return true;
+    }
+
+    public native boolean isEmailValid(String email) /*-{
+        return /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(email);
+    }-*/;
+
+    private void reloadModel(UserDto user) {
+        MainAppService.App.getInstance().getMap(user, new AsyncCallback<MapDto>() {
             public void onSuccess(final MapDto mapDto) {
+                MainScreen.this.user = mapDto.getUser();
+                if (mapDto.getUser() != null) {
+                    singInInitButton.addClassName(LOGGED);
+                    singInInitButton.setInnerText(LOGGED);
+                } else {
+                    singInInitButton.removeClassName(LOGGED);
+                    singInInitButton.setInnerText("Sing in");
+                }
                 knownMovies = mapDto.getTokens();
                 svgLayer.setInnerHTML(mapDto.getMap());
 
@@ -187,7 +296,7 @@ public class MainScreen extends Composite {
         }, 1000);
     }
 
-    private void showTemoraryPopup(final DivElement infoBox) {
+    private void showTemporaryPopup(final DivElement infoBox) {
         infoBox.removeClassName(POPUP_HIDE);
         infoBox.addClassName(POPUP_SHOW);
         Scheduler.get().scheduleFixedDelay(new Scheduler.RepeatingCommand() {

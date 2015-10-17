@@ -10,5 +10,7 @@ import java.util.List;
  */
 public interface TokenRepo extends CrudRepository<Token, Integer> {
     Token findByDomId(String domId);
+
+//    @Query("select t from Token t where t.movie.userId like %?1")
     List<Token> findAll();
 }

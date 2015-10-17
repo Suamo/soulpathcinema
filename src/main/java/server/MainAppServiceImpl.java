@@ -12,10 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.dao.ImdbMovieDao;
 import server.dao.TokenRepo;
+import server.dao.UserRepo;
 import shared.MapDto;
 import shared.MovieJson;
+import shared.UserDto;
 import shared.entity.Movie;
 import shared.entity.Token;
+import shared.entity.User;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,16 +34,18 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
     private ApplicationContext context;
 
     private ImdbMovieDao imdbMovieDao;
-    private TokenRepo repository;
+    private TokenRepo tokenRepo;
+    private UserRepo userRepo;
 
-    public MapDto getMap() {
+    public MapDto getMap(UserDto user) {
         initApplication();
 
         MapDto mapDto = new MapDto();
         mapDto.setMap(obtainMap());
-        for (Token token : repository.findAll()) {
+        for (Token token : tokenRepo.findAll()) {
             mapDto.addToken(token.getDomId(), token);
         }
+        mapDto.setUser(user);
         return mapDto;
     }
 
@@ -65,7 +70,22 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
                 movie.setCountry(imdbMovie.getCountry());
             }
         }
-        return repository.save(token);
+        return tokenRepo.save(token);
+    }
+
+    public UserDto logIn(String email, String psw) {
+        User user = userRepo.findByEmailAndPassword(email, psw);
+        if (user == null) {
+            return null;
+        }
+        return new UserDto(user);
+    }
+
+    public UserDto singIn(String email, String psw) {
+        if (logIn(email, psw) == null) {
+            return new UserDto(userRepo.save(new User(email, psw)));
+        }
+        return null;
     }
 
     private void initApplication() {
@@ -73,8 +93,11 @@ public class MainAppServiceImpl extends RemoteServiceServlet implements MainAppS
         if (context == null) {
             context = new ClassPathXmlApplicationContext("applicationContext.xml");
         }
-        if (repository == null) {
-            repository = context.getBean(TokenRepo.class);
+        if (tokenRepo == null) {
+            tokenRepo = context.getBean(TokenRepo.class);
+        }
+        if (userRepo == null) {
+            userRepo = context.getBean(UserRepo.class);
         }
         if (imdbMovieDao == null) {
             imdbMovieDao = context.getBean(ImdbMovieDao.class);

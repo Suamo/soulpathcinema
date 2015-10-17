@@ -1,6 +1,7 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:details='urn:import:client.widgets.detailsscreen'>
+             xmlns:details='urn:import:client.widgets.detailsscreen'
+        >
     <g:HTMLPanel>
         <div ui:field="loadingScreen" class="fullScreen loadingScreen">
             <span class="fullScreen">Soul path: cinema</span>
@@ -8,6 +9,7 @@
 
         <div ui:field="svgLayer" class="fullScreen"/>
         <div ui:field="imagesLayer" class="fullScreen imagesLayer"/>
+        <div ui:field="singInInitButton" class="singInInitButton"/>
         <div ui:field="mandala" class="mandala">
             <div class="circle-main img-circle detailsSphere"/>
             <div ui:field="mainPoster" class="circle-main img-circle"/>
@@ -19,8 +21,20 @@
         <div ui:field="wrongSavingInfoBox" class="wrongSavingInfoBox">
             Token saving has been failed
         </div>
+        <div ui:field="loginInfoBox" class="loginInfoBox">
+            <div>
+                <input type="text" placeholder="email" ui:field="emailField"/>
+                <input type="password" placeholder="password" ui:field="passwordField"/>
+            </div>
+            <div>
+                <div class="textButton" ui:field="singIn">Sing in</div>
+                <div class="textButton" ui:field="logIn">Log in</div>
+            </div>
+        </div>
         <div class="filterIndicator">
-            Filter: <span ui:field="filterIndicator" class="filterType">Solved</span><span class="displayNone filterClearButton"> x</span>
+            Filter:
+            <span ui:field="filterIndicator" class="filterType">Solved</span>
+            <span class="displayNone filterClearButton">x</span>
         </div>
     </g:HTMLPanel>
 </ui:UiBinder>
