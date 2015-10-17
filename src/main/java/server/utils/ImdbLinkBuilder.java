@@ -6,6 +6,10 @@ import java.net.URISyntaxException;
 /**
  * Created by John Silver on 06.22.2015 22:48
  * Sample link: "http://www.omdbapi.com/?t=Game%20of%20Thrones&Season=1&Episode=1"
+ *
+ * Alternative:
+ * http://www.imdb.com/xml/find?json=1&nr=1&tt=on&q=malinovke
+ * https://github.com/simonbs/alfred-movies-workflow/blob/master/source/imdb.py
  */
 public class ImdbLinkBuilder {
     /**
