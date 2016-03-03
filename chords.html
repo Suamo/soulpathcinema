@@ -1,0 +1,377 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+    <title>Arpeggios finder</title>
+    <!-- Using getbootstrap.com -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            background-color: #eeeeee;
+            margin: 20px
+        }
+
+        table {
+            text-align: center;
+            color: gray;
+            background-image: -webkit-gradient( linear, left bottom, left top, color-stop(0.28, rgb(255,201,116)), color-stop(0.64, rgb(228,143,10)) );
+            background-image: -moz-linear-gradient( center bottom, rgb(255,201,116) 28%, rgb(228,143,10) 64% );
+            width:300px;
+            height:150px;
+            margin-bottom: 0 !important;
+        }
+
+        .mainNote {
+            border-radius: 4em 1em 4em 1em;
+            background: #c6ca0e !important;
+        }
+
+        table .secondaryNote {
+            /*border-radius: 25px;*/
+            border-radius: 4em 1em 4em 1em;
+            background: #73AD21;
+            padding: 20px;
+        }
+
+        table tr td:first-child {
+            width: 25px;
+            border-right: 3px solid black;
+        }
+
+        table tr td {
+            width: 50px;
+            /*background-color: white;*/
+        }
+
+        .bold {
+            font-weight: bold;
+            color: black;
+        }
+
+        .header {
+            border: none !important;
+            background: #eeeeee;
+        }
+
+        .header td {
+            border: none !important;
+            text-align: center !important;
+            font-weight: bold;
+            background-color: #eeeeee;
+        }
+
+        .memo {
+            font-weight: bold;
+            font-size: 42px;
+            height: 60px;
+        }
+
+        .memo .chordNotes {
+            color: red;
+            font-size: 20px;
+        }
+    </style>
+
+    <script>
+        function translateNote(note) {
+            switch (note) {
+                case 'C':
+                    return 'До';
+                case 'D':
+                    return 'Ре';
+                case 'E':
+                    return 'Ми';
+                case 'F':
+                    return 'Фа';
+                case 'G':
+                    return 'Соль';
+                case 'A':
+                    return 'Ля';
+                case 'B':
+                    return 'Си';
+                case 'C#':
+                    return 'До#';
+                case 'D#':
+                    return 'Ре#';
+                case 'E#':
+                    return 'Ми#';
+                case 'F#':
+                    return 'Фа#';
+                case 'G#':
+                    return 'Соль#';
+                case 'A#':
+                    return 'Ля#';
+                case 'B#':
+                    return 'Си#';
+            }
+        }
+
+        function showTranslation(chordName, notesArr) {
+            var notes = '';
+            for (var noteNum = 0; noteNum < notesArr.length; noteNum++) {
+                notes += translateNote(notesArr[noteNum]) + ' ';
+            }
+            document.getElementById('chordName').innerText = chordName;
+            document.getElementById('memo').innerText = '[' + notes.trim().split(' ').join(', ') + ']';
+        }
+
+        function findNotesByNotes() {
+            var notesString = defineChord();
+            var notesArr = notesString.split(' ');
+            for (var strNum = 1; strNum < 7; strNum++) {
+                for (var bar = 1; bar < 14; bar++) {
+                    var cell = document.getElementById('s' + strNum + '_' + bar);
+                    cell.className = cell.className.replace('secondaryNote', '').replace('mainNote', '').replace('bold', '').trim();
+                    for (var noteNum = 0; noteNum < notesArr.length; noteNum++) {
+                        if (notesArr[noteNum] == cell.innerText) {
+                            cell.className += ' bold secondaryNote';
+                            if (cell.innerText == getChord()) {
+                                cell.className += ' mainNote';
+                            }
+                        }
+                    }
+                }
+            }
+
+            var chordName = getChord() + getChordType().replace('Maj', '').replace('Min', 'm');
+            showTranslation(chordName, notesArr);
+        }
+
+        function defineChordType(chordType, majValue, maj7Value, minValue, min7Value) {
+            switch (chordType) {
+                case 'Maj':
+                    return majValue;
+                case 'Maj7':
+                    return maj7Value;
+                case 'Min':
+                    return minValue;
+                case 'Min7':
+                    return min7Value;
+            }
+        }
+
+        function getChord() {
+            for (var note = 1; note <= 7; note++) {
+                var chordKey = document.getElementById('chordKey' + note);
+                if (chordKey.checked) {
+                    return chordKey.value;
+                }
+            }
+            return '';
+        }
+
+        function getChordType() {
+            for (var i = 1; i <= 4; i++) {
+                var type = document.getElementById('chordType' + i);
+                if (type.checked) {
+                    return type.value;
+                }
+            }
+            return '';
+        }
+
+        function defineChord() {
+            var chordType = getChordType();
+            switch (getChord()) {
+                case 'C':
+                    return defineChordType(chordType, 'C E G', 'C E G A#', 'C D# G', 'C D# G A#');
+                case 'D':
+                    return defineChordType(chordType, 'D F# A', 'D F# A C', 'D F A', 'D F A C');
+                case 'E':
+                    return defineChordType(chordType, 'E G# B', 'E G# B D', 'E G B', 'E G B D');
+                case 'F':
+                    return defineChordType(chordType, 'F A C', 'F A C D#', 'F G# C', 'F G# C D#');
+                case 'G':
+                    return defineChordType(chordType, 'G B D', 'G B D F', 'G A# D', 'G A# D F');
+                case 'A':
+                    return defineChordType(chordType, 'A C# E', 'A C# E G', 'A C E', 'A C E G');
+                case 'B':
+                    return defineChordType(chordType, 'B D# F#', 'B D# F# A', 'B D F#', 'B D F# A');
+            }
+        }
+    </script>
+</head>
+
+<body onload="findNotesByNotes()">
+
+<div class="col-xs-8 memo">
+    <span id="chordName"></span>
+    <span class="chordNotes" id="memo"></span>
+</div>
+
+<table class="table" style="width: 100%">
+    <tr>
+        <td class="table-bordered" id="s1_1">E</td>
+        <td class="table-bordered" id="s1_2">F</td>
+        <td class="table-bordered" id="s1_3">F#</td>
+        <td class="table-bordered" id="s1_4">G</td>
+        <td class="table-bordered" id="s1_5">G#</td>
+        <td class="table-bordered" id="s1_6">A</td>
+        <td class="table-bordered" id="s1_7">A#</td>
+        <td class="table-bordered" id="s1_8">B</td>
+        <td class="table-bordered" id="s1_9">C</td>
+        <td class="table-bordered" id="s1_10">C#</td>
+        <td class="table-bordered" id="s1_11">D</td>
+        <td class="table-bordered" id="s1_12">D#</td>
+        <td class="table-bordered" id="s1_13">E</td>
+    </tr>
+    <tr>
+        <td class="table-bordered" id="s2_1">B</td>
+        <td class="table-bordered" id="s2_2">C</td>
+        <td class="table-bordered" id="s2_3">C#</td>
+        <td class="table-bordered" id="s2_4">D</td>
+        <td class="table-bordered" id="s2_5">D#</td>
+        <td class="table-bordered" id="s2_6">E</td>
+        <td class="table-bordered" id="s2_7">F</td>
+        <td class="table-bordered" id="s2_8">F#</td>
+        <td class="table-bordered" id="s2_9">G</td>
+        <td class="table-bordered" id="s2_10">G#</td>
+        <td class="table-bordered" id="s2_11">A</td>
+        <td class="table-bordered" id="s2_12">A#</td>
+        <td class="table-bordered" id="s2_13">B</td>
+    </tr>
+    <tr>
+        <td class="table-bordered" id="s3_1">G</td>
+        <td class="table-bordered" id="s3_2">G#</td>
+        <td class="table-bordered" id="s3_3">A</td>
+        <td class="table-bordered" id="s3_4">A#</td>
+        <td class="table-bordered" id="s3_5">B</td>
+        <td class="table-bordered" id="s3_6">C</td>
+        <td class="table-bordered" id="s3_7">C#</td>
+        <td class="table-bordered" id="s3_8">D</td>
+        <td class="table-bordered" id="s3_9">D#</td>
+        <td class="table-bordered" id="s3_10">E</td>
+        <td class="table-bordered" id="s3_11">F</td>
+        <td class="table-bordered" id="s3_12">F#</td>
+        <td class="table-bordered" id="s3_13">G</td>
+    </tr>
+    <tr>
+        <td class="table-bordered" id="s4_1">D</td>
+        <td class="table-bordered" id="s4_2">D#</td>
+        <td class="table-bordered" id="s4_3">E</td>
+        <td class="table-bordered" id="s4_4">F</td>
+        <td class="table-bordered" id="s4_5">F#</td>
+        <td class="table-bordered" id="s4_6">G</td>
+        <td class="table-bordered" id="s4_7">G#</td>
+        <td class="table-bordered" id="s4_8">A</td>
+        <td class="table-bordered" id="s4_9">A#</td>
+        <td class="table-bordered" id="s4_10">B</td>
+        <td class="table-bordered" id="s4_11">C</td>
+        <td class="table-bordered" id="s4_12">C#</td>
+        <td class="table-bordered" id="s4_13">D</td>
+    </tr>
+    <tr>
+        <td class="table-bordered" id="s5_1">A</td>
+        <td class="table-bordered" id="s5_2">A#</td>
+        <td class="table-bordered" id="s5_3">B</td>
+        <td class="table-bordered" id="s5_4">C</td>
+        <td class="table-bordered" id="s5_5">C#</td>
+        <td class="table-bordered" id="s5_6">D</td>
+        <td class="table-bordered" id="s5_7">D#</td>
+        <td class="table-bordered" id="s5_8">E</td>
+        <td class="table-bordered" id="s5_9">F</td>
+        <td class="table-bordered" id="s5_10">F#</td>
+        <td class="table-bordered" id="s5_11">G</td>
+        <td class="table-bordered" id="s5_12">G#</td>
+        <td class="table-bordered" id="s5_13">A</td>
+    </tr>
+    <tr>
+        <td class="table-bordered" id="s6_1">E</td>
+        <td class="table-bordered" id="s6_2">F</td>
+        <td class="table-bordered" id="s6_3">F#</td>
+        <td class="table-bordered" id="s6_4">G</td>
+        <td class="table-bordered" id="s6_5">G#</td>
+        <td class="table-bordered" id="s6_6">A</td>
+        <td class="table-bordered" id="s6_7">A#</td>
+        <td class="table-bordered" id="s6_8">B</td>
+        <td class="table-bordered" id="s6_9">C</td>
+        <td class="table-bordered" id="s6_10">C#</td>
+        <td class="table-bordered" id="s6_11">D</td>
+        <td class="table-bordered" id="s6_12">D#</td>
+        <td class="table-bordered" id="s6_13">E</td>
+    </tr>
+</table>
+<table class="table" style="width: 100%; height: 50px">
+    <tr class="header">
+        <td>#</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>5</td>
+        <td></td>
+        <td>7</td>
+        <td></td>
+        <td></td>
+        <td>10</td>
+        <td></td>
+        <td>12</td>
+    </tr>
+</table>
+
+<br>
+<div class="row">
+    <div class="col-xs-8">
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-warning btn-lg active">
+                <input type="radio" name="chordKey" id="chordKey1" autocomplete="off" value="C" onchange="findNotesByNotes()" checked>
+                C
+            </label>
+            <label class="btn btn-warning btn-lg">
+                <input type="radio" name="chordKey" id="chordKey2" autocomplete="off" value="D" onchange="findNotesByNotes()">
+                D
+            </label>
+            <label class="btn btn-warning btn-lg">
+                <input type="radio" name="chordKey" id="chordKey3" autocomplete="off" value="E" onchange="findNotesByNotes()">
+                E
+            </label>
+            <label class="btn btn-warning btn-lg">
+                <input type="radio" name="chordKey" id="chordKey4" autocomplete="off" value="F" onchange="findNotesByNotes()">
+                F
+            </label>
+            <label class="btn btn-warning btn-lg">
+                <input type="radio" name="chordKey" id="chordKey5" autocomplete="off" value="G" onchange="findNotesByNotes()">
+                G
+            </label>
+            <label class="btn btn-warning btn-lg">
+                <input type="radio" name="chordKey" id="chordKey6" autocomplete="off" value="A" onchange="findNotesByNotes()">
+                A
+            </label>
+            <label class="btn btn-warning btn-lg">
+                <input type="radio" name="chordKey" id="chordKey7" autocomplete="off" value="B" onchange="findNotesByNotes()">
+                B
+            </label>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-xs-8">
+        <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-info btn-lg active">
+                <input type="radio" name="chordType" id="chordType1" autocomplete="off" value="Maj" onchange="findNotesByNotes()" checked>
+                Maj
+            </label>
+            <label class="btn btn-info btn-lg">
+                <input type="radio" name="chordType" id="chordType2" autocomplete="off" value="Maj7" onchange="findNotesByNotes()">
+                Maj7
+            </label>
+            <label class="btn btn-info btn-lg">
+                <input type="radio" name="chordType" id="chordType3" autocomplete="off" value="Min" onchange="findNotesByNotes()">
+                Min
+            </label>
+            <label class="btn btn-info btn-lg">
+                <input type="radio" name="chordType" id="chordType4" autocomplete="off" value="Min7" onchange="findNotesByNotes()">
+                Min7
+            </label>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
